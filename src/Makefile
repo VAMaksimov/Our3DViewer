@@ -7,11 +7,10 @@ REPORT_NAME = report
 
 FLAGS = -std=$(STD) -Wall -Werror -Wextra -I.
 TEST_FLAGS = -lgtest_main -lgtest
-NCURSES_FLAGS = -lncurses
 COV_FLAGS = -fprofile-arcs -ftest-coverage
 CLANG = clang-format -style=$(STYLE)
 VALGRIND = valgrind --vgdb=no --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --read-var-info=yes --log-file=$(VALG_FILE)
-LIBS = libncurses-dev check gcovr lcov doxygen build-essential qt6-base-dev
+LIBS = check gcovr lcov doxygen build-essential qt6-base-dev
 
 ## FILES EXTENSIONS
 GCOV_FILES = *.gcov *.gcna *.gcda *.gcno
@@ -22,8 +21,9 @@ SRC_DIR = .
 BUILD_DIR = build
 DIST_DIR = dist
 OBJECTS_DIR = $(BUILD_DIR)/objects
-BACKEND_DIR = brick_game
-FRONTEND_DIR = gui
+MODEL_DIR = model
+VIEW_DIR = view
+CONTROLLER_DIR = controller
 TESTS_DIR = tests
 HEADER_DIR = include
 LOG_DIR = logs
@@ -39,31 +39,40 @@ RESET_COLOR = \033[0m
 # << INIT SECTION ENDS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >> BUILD SECTION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-## BACKEND BUILDING
-BACKEND_SOURCES = $(shell find $(BACKEND_DIR) -name "*.cpp")
-BACKEND_OBJECTS = $(patsubst $(BACKEND_DIR)/%.cpp, $(OBJECTS_DIR)/%.o, $(BACKEND_SOURCES))
-BACKEND_HEADERS = $(shell find $(BACKEND_DIR) -name "*.h")
+## MODEL BUILDING
+MODEL_SOURCES = $(shell find $(MODEL_DIR) -name "*.cpp")
+MODEL_OBJECTS = $(patsubst $(MODEL_DIR)/%.cpp, $(OBJECTS_DIR)/%.o, $(MODEL_SOURCES))
+MODEL_HEADERS = $(shell find $(MODEL_DIR) -name "*.h")
 
-## FRONTEND BUILDING
-FRONTEND_SOURCES = $(shell find $(FRONTEND_DIR) -name "*.cpp")
-FRONTEND_OBJECTS = $(patsubst $(FRONTEND_DIR)/%.cpp, $(OBJECTS_DIR)/%.o, $(FRONTEND_SOURCES))
-FRONTEND_HEADERS = $(shell find $(FRONTEND_DIR) -name "*.h")
+## VIEW BUILDING
+VIEW_SOURCES = $(shell find $(VIEW_DIR) -name "*.cpp")
+VIEW_OBJECTS = $(patsubst $(VIEW_DIR)/%.cpp, $(OBJECTS_DIR)/%.o, $(VIEW_SOURCES))
+VIEW_HEADERS = $(shell find $(VIEW_DIR) -name "*.h")
+
+## CONTROLLER BUILDING
+CONTROLLER_SOURCES = $(shell find $(CONTROLLER_DIR) -name "*.cpp")
+CONTROLLER_OBJECTS = $(patsubst $(CONTROLLER_DIR)/%.cpp, $(OBJECTS_DIR)/%.o, $(CONTROLLER_SOURCES))
+CONTROLLER_HEADERS = $(shell find $(CONTROLLER_DIR) -name "*.h")
 
 ## TESTS BUILDING
 TESTS_SOURCES = $(shell find $(TESTS_DIR) -name "*.cpp")
 TESTS_OBJECTS = $(patsubst $(TESTS_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TESTS_SOURCES))
 TESTS_HEADERS = $(shell find $(TESTS_DIR) -name "*.h")
 
-MODULES_SOURCES = $(BACKEND_SOURCES) $(FRONTEND_SOURCES)
-MODULES_OBJECTS = $(BACKEND_OBJECTS) $(FRONTEND_OBJECTS)
-MODULES_HEADERS = $(BACKEND_HEADERS) $(FRONTEND_HEADERS)
+MODULES_SOURCES = $(MODEL_SOURCES) $(VIEW_SOURCES) $(CONTROLLER_SOURCES)
+MODULES_OBJECTS = $(MODEL_OBJECTS) $(VIEW_OBJECTS) $(CONTROLLER_OBJECTS)
+MODULES_HEADERS = $(MODEL_HEADERS) $(VIEW_HEADERS) $(CONTROLLER_HEADERS)
 
-## BACKEND COMPILE RULE
-$(OBJECTS_DIR)/%.o: $(BACKEND_DIR)/%.cpp
+## MODEL COMPILE RULE
+$(OBJECTS_DIR)/%.o: $(MODEL_DIR)/%.cpp
 	@$(CC) $(FLAGS) -c $< -o $@
 
-## FRONTEND COMPILE RULE
-$(OBJECTS_DIR)/%.o: $(FRONTEND_DIR)/%.cpp
+## VIEW COMPILE RULE
+$(OBJECTS_DIR)/%.o: $(VIEW_DIR)/%.cpp
+	@$(CC) $(FLAGS) -c $< -o $@
+
+## CONTROLLER COMPILE RULE
+$(OBJECTS_DIR)/%.o: $(CONTROLLER_DIR)/%.cpp
 	@$(CC) $(FLAGS) -c $< -o $@
 
 ## TESTS COMPILE RULE
@@ -72,7 +81,7 @@ $(BUILD_DIR)/%.o: $(TESTS_DIR)/%.cpp
 # << BUILD SECTION ENDS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # >> MAIN SECTION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-.PHONY: build_dir all clean test gcov_report dvi dist cli gui
+.PHONY: build_dir all clean test gcov_report dvi dist gui
 
 all: install test dvi dist gcov_report
 
@@ -94,12 +103,11 @@ uninstall:
 	else \
 		echo "$(YELLOW)No files found in:$(RESET_COLOR) $(BLUE)$(BUILD_DIR)$(RESET_COLOR)"; \
 	fi
-	rm $(LOG_DIR)/snake_high_score.txt
+
 	rm $(LOG_DIR)/tetris_high_score.txt
 
 ## RUN PROGRAM
-cli:
-	./$(BUILD_DIR)/$(LIBNAME)_cli
+
 
 gui:
 	./$(BUILD_DIR)/$(LIBNAME)_gui
@@ -114,7 +122,7 @@ dist: clean_dist
 	@if [ ! -d "$(DIST_DIR)" ]; then \
 		mkdir -p "$(DIST_DIR)"; \
 	fi;
-	cp -r $(BACKEND_DIR) $(FRONTEND_DIR) $(HEADER_DIR) $(DIST_DIR)
+	cp -r $(MODEL_DIR) $(VIEW_DIR) $(CONTROLLER_DIR) $(HEADER_DIR) $(DIST_DIR)
 	cp Makefile Doxyfile mainpage.dox $(DIST_DIR)
 	tar -czf $(LIBNAME).tar.gz -C $(DIST_DIR) .
 	@echo "$(GREEN)Distributive successfully created:$(RESET_COLOR) $(BLUE)$(LIBNAME).tar.gz$(RESET_COLOR)"
@@ -204,9 +212,9 @@ gcov_report: clean test_cov
 # >> UTILS SECTION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 build_dir:
 	@mkdir -p $(BUILD_DIR) $(OBJECTS_DIR)
-	@for dir in tetris snake cli desktop; do \
-		mkdir -p $(OBJECTS_DIR)/$$dir; \
-	done
+	@mkdir -p $(OBJECTS_DIR)/model
+	@mkdir -p $(OBJECTS_DIR)/view
+	@mkdir -p $(OBJECTS_DIR)/controller
 	@mkdir -p $(BUILD_DIR)/logs
 	@mkdir -p $(COV_DIR)
 
