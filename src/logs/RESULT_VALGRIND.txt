@@ -1,0 +1,146 @@
+==9153== Memcheck, a memory error detector
+==9153== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==9153== Using Valgrind-3.22.0-bd4db67b1d-20231031 and LibVEX; rerun with -h for copyright info
+==9153== Command: ./build/test
+==9153== Parent PID: 9130
+==9153== 
+--9153-- 
+--9153-- Valgrind options:
+--9153--    --vgdb=no
+--9153--    --leak-check=full
+--9153--    --show-leak-kinds=all
+--9153--    --track-origins=yes
+--9153--    --verbose
+--9153--    --read-var-info=yes
+--9153--    --log-file=logs/RESULT_VALGRIND.txt
+--9153-- Contents of /proc/version:
+--9153--   Linux version 5.15.167.4-microsoft-standard-WSL2 (root@f9c826d3017f) (gcc (GCC) 11.2.0, GNU ld (GNU Binutils) 2.37) #1 SMP Tue Nov 5 00:21:55 UTC 2024
+--9153-- 
+--9153-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--9153-- Page sizes: currently 4096, max supported 4096
+--9153-- Valgrind library directory: /usr/libexec/valgrind
+--9153-- Reading syms from /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test
+--9153-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--9153--   Considering /usr/lib/debug/.build-id/1c/8db5f83bba514f8fd5f1fb6d7be975be1bb855.debug ..
+--9153--   .. build-id is valid
+--9153-- warning: addVar: unknown size (maps)
+--9153-- warning: addVar: unknown size (maps)
+--9153-- warning: addVar: unknown size (maps)
+--9153-- warning: addVar: unknown size (maps)
+--9153-- warning: addVar: unknown size (buf)
+--9153-- warning: addVar: unknown size (buf)
+--9153-- warning: addVar: unknown size (buf)
+--9153-- warning: addVar: unknown size (buf)
+--9153-- warning: addVar: unknown size (loadcmds)
+--9153-- warning: addVar: unknown size (loadcmds)
+--9153-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--9153--    object doesn't have a dynamic symbol table
+--9153-- Scheduler: using generic scheduler lock implementation.
+--9153-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+--9153-- REDIR: 0x4028b00 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c2e1a (???)
+--9153-- REDIR: 0x40272b0 (ld-linux-x86-64.so.2:index) redirected to 0x580c2e34 (???)
+--9153-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--9153-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+==9153== WARNING: new redirection conflicts with existing -- ignoring it
+--9153--     old: 0x04028b00 (strlen              ) R-> (0000.0) 0x580c2e1a ???
+--9153--     new: 0x04028b00 (strlen              ) R-> (2007.0) 0x0484f340 strlen
+--9153-- REDIR: 0x40274e0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4850460 (strcmp)
+--9153-- REDIR: 0x4026910 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853cd0 (mempcpy)
+--9153-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33
+--9153-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--9153-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+--9153-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--9153--   Considering /usr/lib/debug/.build-id/42/c84c92e6f98126b3e2230ebfdead22c235b667.debug ..
+--9153--   .. build-id is valid
+--9153-- REDIR: 0x4028ca0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x484fc90 (strncmp)
+--9153-- REDIR: 0x4cae050 (libc.so.6:strnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cae0e0 (libc.so.6:strpbrk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cac1a0 (libc.so.6:strcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cc53b0 (libc.so.6:wcsnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cab290 (libc.so.6:memset) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cc4b20 (libc.so.6:wcslen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4d303c0 (libc.so.6:__memcpy_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cab200 (libc.so.6:memrchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cc5350 (libc.so.6:wcsncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4caa720 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cc38e0 (libc.so.6:wcschr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cac090 (libc.so.6:index) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cae110 (libc.so.6:rindex) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cc3990 (libc.so.6:wcscmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cab4b0 (libc.so.6:stpncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cd1eb0 (libc.so.6:wmemchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cadef0 (libc.so.6:strncmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cab510 (libc.so.6:strcasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cad310 (libc.so.6:strcspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cc48f0 (libc.so.6:wcscpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cac020 (libc.so.6:strcat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4caddf0 (libc.so.6:strncasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cac110 (libc.so.6:strchrnul) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4caa630 (libc.so.6:bcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cad2a0 (libc.so.6:strcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cab5b0 (libc.so.6:strcasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cadcc0 (libc.so.6:strlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cadf90 (libc.so.6:strncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cd1f30 (libc.so.6:wmemcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4d304e0 (libc.so.6:__memmove_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==9153== WARNING: new redirection conflicts with existing -- ignoring it
+--9153--     old: 0x04d819d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
+--9153--     new: 0x04d819d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
+--9153-- REDIR: 0x4cab440 (libc.so.6:stpcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4caafc0 (libc.so.6:memmove) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==9153== Preferring higher priority redirection:
+--9153--     old: 0x04d81a00 (__memcpy_avx_unalign) R-> (2018.0) 0x04851580 __memcpy_avx_unaligned_erms
+--9153--     new: 0x04d81a00 (__memcpy_avx_unalign) R-> (2018.1) 0x04852d60 memmove
+--9153-- REDIR: 0x4caa5b0 (libc.so.6:memchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cae2e0 (libc.so.6:strspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cab0e0 (libc.so.6:mempcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4cadd50 (libc.so.6:strncasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4caeba0 (libc.so.6:strstr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--9153-- REDIR: 0x4d865f0 (libc.so.6:__strrchr_avx2) redirected to 0x484ed20 (rindex)
+--9153-- REDIR: 0x4d84740 (libc.so.6:__strlen_avx2) redirected to 0x484f220 (strlen)
+--9153-- REDIR: 0x4d812a0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852480 (bcmp)
+--9153-- REDIR: 0x4d85820 (libc.so.6:__strncmp_avx2) redirected to 0x484fab0 (strncmp)
+--9153-- REDIR: 0x4ca6650 (libc.so.6:malloc) redirected to 0x48467b0 (malloc)
+--9153-- REDIR: 0x491f8e0 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4846f30 (operator new(unsigned long))
+--9153-- REDIR: 0x4d81a00 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852d60 (memmove)
+--9153-- REDIR: 0x491d8b0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x484a530 (operator delete(void*, unsigned long))
+--9153-- REDIR: 0x4d81000 (libc.so.6:__memchr_avx2) redirected to 0x48504e0 (memchr)
+--9153-- REDIR: 0x4d82400 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852c50 (memset)
+--9153-- REDIR: 0x4d83f90 (libc.so.6:__strcmp_avx2) redirected to 0x4850360 (strcmp)
+--9153-- REDIR: 0x491d8a0 (libstdc++.so.6:operator delete(void*)) redirected to 0x484a080 (operator delete(void*))
+--9153-- REDIR: 0x4d83da0 (libc.so.6:__strchrnul_avx2) redirected to 0x48537b0 (strchrnul)
+--9153-- REDIR: 0x4d83b60 (libc.so.6:__strchr_avx2) redirected to 0x484ef00 (index)
+--9153-- REDIR: 0x4d82e40 (libc.so.6:__strcasecmp_avx2) redirected to 0x484fcf0 (strcasecmp)
+--9153-- REDIR: 0x4d819c0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x48538d0 (mempcpy)
+--9153-- REDIR: 0x491f930 (libstdc++.so.6:operator new(unsigned long, std::nothrow_t const&)) redirected to 0x4847970 (operator new(unsigned long, std::nothrow_t const&))
+--9153-- REDIR: 0x4ca6d30 (libc.so.6:free) redirected to 0x4849820 (free)
+==9153== 
+==9153== HEAP SUMMARY:
+==9153==     in use at exit: 472 bytes in 1 blocks
+==9153==   total heap usage: 304 allocs, 303 frees, 153,067 bytes allocated
+==9153== 
+==9153== Searching for pointers to 1 not-freed blocks
+==9153== Checked 152,656 bytes
+==9153== 
+==9153== 472 bytes in 1 blocks are still reachable in loss record 1 of 1
+==9153==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9153==    by 0x4C7EE7E: __fopen_internal (iofopen.c:65)
+==9153==    by 0x4C7EE7E: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==9153==    by 0x11964E: SnakeGameTest_SnakeMove_Test::TestBody() (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153==    by 0x15A4DE: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153==    by 0x141135: testing::Test::Run() (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153==    by 0x1412F4: testing::TestInfo::Run() (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153==    by 0x1414DE: testing::TestSuite::Run() (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153==    by 0x14F34B: testing::internal::UnitTestImpl::RunAllTests() (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153==    by 0x15ABB6: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153==    by 0x1416D7: testing::UnitTest::Run() (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153==    by 0x1176B3: main (in /mnt/c/Users/ASUS/Desktop/CPP3_BrickGame_v2.0.ID_1396153-1/src/build/test)
+==9153== 
+==9153== LEAK SUMMARY:
+==9153==    definitely lost: 0 bytes in 0 blocks
+==9153==    indirectly lost: 0 bytes in 0 blocks
+==9153==      possibly lost: 0 bytes in 0 blocks
+==9153==    still reachable: 472 bytes in 1 blocks
+==9153==         suppressed: 0 bytes in 0 blocks
+==9153== 
+==9153== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
