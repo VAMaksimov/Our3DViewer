@@ -178,6 +178,7 @@ test: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
 valgrind: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
 	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(BACKEND_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
 	$(VALGRIND) ./$(BUILD_DIR)/test
+	cat $(VALG_FILE) 2>&1 | grep lost
 
 ## MAKE GCOV REPORT
 # specific variable for gcov report target
