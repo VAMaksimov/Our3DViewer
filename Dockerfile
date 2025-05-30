@@ -35,6 +35,7 @@ RUN apt-get install -y lcov
 RUN apt-get install -y libgtest-dev
 RUN apt-get install -y build-essential
 RUN apt-get install -y --fix-missing qt6-base-dev
+RUN rm -rf /var/lib/apt/lists/*
 # RUN apt-get install -y pkg-config
 
 # COPY . /project
