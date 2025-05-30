@@ -1,4 +1,4 @@
-#include "gui/desktop/qt_widget.h"
+#include "view/qt_widget.h"
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);

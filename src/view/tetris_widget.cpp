@@ -1,4 +1,4 @@
-#include "gui/desktop/qt_widget.h"
+#include "view/qt_widget.h"
 #include "include/common.h"
 #include "include/tetris.h"
 

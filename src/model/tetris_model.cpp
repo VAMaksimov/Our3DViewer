@@ -1,5 +1,4 @@
 #include "include/common.h"
-#include "include/interface.h"
 #include "include/tetris.h"
 
 const int FIGURE_COORDS[28][4][2] = {
