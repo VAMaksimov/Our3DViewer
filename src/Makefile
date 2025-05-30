@@ -10,7 +10,7 @@ TEST_FLAGS = -lgtest_main -lgtest
 COV_FLAGS = -fprofile-arcs -ftest-coverage
 CLANG = clang-format -style=$(STYLE)
 VALGRIND = valgrind --vgdb=no --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --read-var-info=yes --log-file=$(VALG_FILE)
-LIBS = check gcovr lcov doxygen build-essential qt6-base-dev
+LIBS = cmake valgrind check libgtest-dev gcovr lcov doxygen build-essential qt6-base-dev
 
 ## FILES EXTENSIONS
 GCOV_FILES = *.gcov *.gcna *.gcda *.gcno
