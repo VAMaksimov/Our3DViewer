@@ -2,7 +2,7 @@
 CC = g++
 STD = c++20
 STYLE = Google
-LIBNAME = s21_brick_game
+LIBNAME = 3d_viewer
 REPORT_NAME = report
 
 FLAGS = -std=$(STD) -Wall -Werror -Wextra -I.
