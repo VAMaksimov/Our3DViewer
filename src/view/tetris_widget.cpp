@@ -1,6 +1,6 @@
-#include "view/qt_widget.h"
 #include "include/common.h"
 #include "include/tetris.h"
+#include "view/qt_widget.h"
 
 #define NEXT_FIGURE_PADDING_X 2
 #define NEXT_FIGURE_AREA_Y 4

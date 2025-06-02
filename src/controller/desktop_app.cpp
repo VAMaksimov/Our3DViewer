@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  s21::TetrisWidget tetrisWidget;
-  tetrisWidget.show();
+  s21::ViewerWidget currentWidget;
+  currentWidget.show();
   return app.exec();
 }
