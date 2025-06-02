@@ -83,7 +83,7 @@ $(BUILD_DIR)/%.o: $(TESTS_DIR)/%.cpp
 # >> MAIN SECTION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 .PHONY: build_dir all clean test gcov_report dvi dist gui
 
-all: install test dvi dist gcov_report
+all: install test
 
 rebuild: uninstall install
 
