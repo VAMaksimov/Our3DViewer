@@ -4,8 +4,9 @@
 
 #define NEXT_FIGURE_PADDING_X 2
 #define NEXT_FIGURE_AREA_Y 4
+
 namespace s21 {
-TetrisWidget::TetrisWidget(QWidget *parent)
+ViewerWidget::ViewerWidget(QWidget *parent)
     : QWidget(parent), tetris_game(nullptr), game_timer(nullptr) {
   tetris_game = TetrisGameInfo();
   game_timer = new QTimer(this);
@@ -15,20 +16,20 @@ TetrisWidget::TetrisWidget(QWidget *parent)
   int boardHeightPx = FIELD_HEIGHT * CELL_SIZE;
   resize(boardWidthPx * 2, boardHeightPx + STATS_AREA_SIZE);
 
-  connect(game_timer, &QTimer::timeout, this, &TetrisWidget::gameTick);
+  connect(game_timer, &QTimer::timeout, this, &ViewerWidget::gameTick);
 
   setFocusPolicy(Qt::StrongFocus);
 
   StartGame();
 }
 
-TetrisWidget::~TetrisWidget() {
+ViewerWidget::~ViewerWidget() {
   delete game_timer;
   game_timer = nullptr;
   tetris_game = nullptr;
 }
 
-void TetrisWidget::keyPressEvent(QKeyEvent *event) {
+void ViewerWidget::keyPressEvent(QKeyEvent *event) {
   int key = event->key();
 
   UserAction_t new_state = tetris_game->state;
@@ -69,7 +70,7 @@ void TetrisWidget::keyPressEvent(QKeyEvent *event) {
   update();
 }
 
-void TetrisWidget::paintEvent(QPaintEvent *event) {
+void ViewerWidget::paintEvent(QPaintEvent *event) {
   Q_UNUSED(event);
   QPainter painter(this);
 
@@ -97,7 +98,7 @@ void TetrisWidget::paintEvent(QPaintEvent *event) {
   DisplayNextFigure(painter);
 }
 
-void TetrisWidget::PrintInfo(QPainter &painter, GameInfo_t *game_info,
+void ViewerWidget::PrintInfo(QPainter &painter, GameInfo_t *game_info,
                              UserAction_t state) {
   int boardHeightPx = FIELD_HEIGHT * CELL_SIZE;
   QRect statsRect(0, boardHeightPx, width(), STATS_AREA_SIZE);
@@ -133,7 +134,7 @@ void TetrisWidget::PrintInfo(QPainter &painter, GameInfo_t *game_info,
   }
 }
 
-void TetrisWidget::ShowFigure(QPainter &painter) {
+void ViewerWidget::ShowFigure(QPainter &painter) {
   for (int block = 0; block < 4; ++block) {
     int relativeBlockY = FIGURE_COORDS[tetris_game->current_figure][block][0];
     int relativeBlockX = FIGURE_COORDS[tetris_game->current_figure][block][1];
@@ -146,7 +147,7 @@ void TetrisWidget::ShowFigure(QPainter &painter) {
     painter.fillRect(cellRect, Qt::darkGreen);
   }
 }
-void TetrisWidget::DisplayNextFigure(QPainter &painter) {
+void ViewerWidget::DisplayNextFigure(QPainter &painter) {
   int baseDisplayX =
       FIELD_WIDTH * CELL_SIZE + NEXT_FIGURE_PADDING_X * CELL_SIZE;
 
@@ -167,7 +168,7 @@ void TetrisWidget::DisplayNextFigure(QPainter &painter) {
   }
 }
 
-void TetrisWidget::gameTick() {
+void ViewerWidget::gameTick() {
   if (tetris_game->state != PAUSE && tetris_game->state != GAME_OVER) {
     MoveDown();
 
@@ -179,14 +180,14 @@ void TetrisWidget::gameTick() {
   game_timer->setInterval(TIMEOUTS[tetris_game->game_info.level] * 1000);
 }
 
-void TetrisWidget::StartGame() {
+void ViewerWidget::StartGame() {
   ResetTetris();
   game_timer->start(TIMEOUTS[tetris_game->game_info.level] * 1000);
   setFocus();
   update();
 }
 
-void TetrisWidget::TogglePause() {
+void ViewerWidget::TogglePause() {
   if (tetris_game->state == GAME_OVER) return;
 
   if (game_timer->isActive()) {

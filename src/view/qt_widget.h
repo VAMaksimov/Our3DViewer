@@ -10,19 +10,15 @@
 #include <QTimer>
 #include <QWidget>
 
-#include "include/common.h"
-#include "include/tetris.h"
-
-#define CELL_SIZE 15
-#define STATS_AREA_SIZE 60
+#include "include/main.h"
 
 namespace s21 {
-class TetrisWidget : public QWidget {
+class ViewerWidget : public QWidget {
   Q_OBJECT
 
  public:
-  TetrisWidget(QWidget *parent = nullptr);
-  ~TetrisWidget() override;
+  ViewerWidget(QWidget *parent = nullptr);
+  ~ViewerWidget() override;
 
  protected:
   void keyPressEvent(QKeyEvent *event) override;
@@ -30,18 +26,7 @@ class TetrisWidget : public QWidget {
   void PrintInfo(QPainter &painter, GameInfo_t *game_info, UserAction_t state);
   void ShowFigure(QPainter &painter);
   void DisplayNextFigure(QPainter &painter);
-
- private slots:
-  void gameTick();
-
- private:
-  TetrisGame *tetris_game;
-  QTimer *game_timer;
-
-  void StartGame();
-
-  void TogglePause();
-};  // class TetrisWidget
+};  // class ViewerWidget
 }  // namespace s21
 
 #endif  // INCLUDE_QT_WIDGET_H
