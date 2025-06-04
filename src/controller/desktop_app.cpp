@@ -8,7 +8,5 @@ int main(int argc, char *argv[]) {
   // return app.exec();
   s21::WireframeObject object("samples/most_simple.obj");
   object.PrintInfo();
-  object.SetName("New Name");
-  object.PrintInfo();
   return 0;
 }

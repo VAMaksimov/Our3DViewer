@@ -59,6 +59,8 @@ TESTS_SOURCES = $(shell find $(TESTS_DIR) -name "*.cpp")
 TESTS_OBJECTS = $(patsubst $(TESTS_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TESTS_SOURCES))
 TESTS_HEADERS = $(shell find $(TESTS_DIR) -name "*.h")
 
+INCLUDE_HEADERS = $(shell find include -name "*.h")
+
 MODULES_SOURCES = $(MODEL_SOURCES) $(VIEW_SOURCES) $(CONTROLLER_SOURCES)
 MODULES_OBJECTS = $(MODEL_OBJECTS) $(VIEW_OBJECTS) $(CONTROLLER_OBJECTS)
 MODULES_HEADERS = $(MODEL_HEADERS) $(VIEW_HEADERS) $(CONTROLLER_HEADERS)
@@ -222,7 +224,7 @@ style_check:
 	clang-format -style=$(STYLE) -n $(MODULES_SOURCES) $(MODULES_HEADERS)
 
 style_format:
-	clang-format -style=$(STYLE) -i $(MODULES_SOURCES) $(MODULES_HEADERS)
+	clang-format -style=$(STYLE) -i $(MODULES_SOURCES) $(MODULES_HEADERS) $(INCLUDE_HEADERS)
 
 install_libs:
 	sudo apt-get install $(LIBS)
