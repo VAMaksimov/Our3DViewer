@@ -1,8 +1,14 @@
-#include "view/qt_widget.h"
+#include "model/main.h"
+// #include "view/qt_widget.h"
 
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
-  s21::ViewerWidget currentWidget;
-  currentWidget.show();
-  return app.exec();
+  // QApplication app(argc, argv);
+  // s21::ViewerWidget currentWidget;
+  // currentWidget.show();
+  // return app.exec();
+  s21::WireframeObject object("samples/most_simple.obj");
+  object.PrintInfo();
+  object.SetName("New Name");
+  object.PrintInfo();
+  return 0;
 }

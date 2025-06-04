@@ -4,49 +4,23 @@
 #include <cstdio>
 
 // CONSTANTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#define FIELD_HEIGHT 20
-#define FIELD_WIDTH 10
-
-#define X_BEGIN 1
-
 #define ESCAPE 27
 #define ENTER_KEY 10
 #define SPACE_KEY 32
-
-#define INITIAL_TIMEOUT 150
-
-#define SUCCESS 0
-#define ERROR 1
 
 // extern is for include/interface.h
 extern const float TIMEOUTS[10];
 
 // STRUCTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-typedef struct {
-  int x;
-  int y;
-} PlayerPos;
-
 typedef enum {
-  START,
-  PAUSE,
-  LEFT,
-  RIGHT,
-  UP,
-  DOWN,
-  GAME_OVER,
-  ACTION,
-  NO_ACTION
-} UserAction_t;
-
-typedef struct {
-  int field[FIELD_HEIGHT + 1][FIELD_WIDTH + 4];
-  int score;
-  int high_score;
-  int level;
-} GameInfo_t;
+  ERROR_CODE_SUCCESS = 0,
+  ERROR_CODE_FILE_NOT_FOUND,
+  ERROR_CODE_INVALID_FORMAT,
+  ERROR_CODE_MEMORY_ALLOCATION_FAILED,
+  ERROR_CODE_UNSUPPORTED_VERSION,
+  ERROR_CODE_UNKNOWN_ERROR
+} ErrorCode;
 
 // FUNCTIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-void InitialField(GameInfo_t *game_info);
 
 #endif  // INCLUDE_COMMON_H

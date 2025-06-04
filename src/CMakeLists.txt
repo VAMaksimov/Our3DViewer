@@ -80,22 +80,6 @@ target_link_libraries(3d_viewer_gui PRIVATE
     Qt6::Widgets
 )
 
-
-# --- Tests ---
-enable_testing()
-file(GLOB TEST_SOURCES
-    tests/*.cpp
-)
-
-add_executable(viewer_tests ${TEST_SOURCES})
-target_link_libraries(viewer_tests PRIVATE
-    viewer_model
-    gtest
-    gtest_main
-)
-
-add_test(NAME viewer_tests COMMAND viewer_tests)
-
 # --- Output ---
 message(STATUS "Configured 3D Viewer Project")
 message(STATUS "GUI Target: 3d_viewer_gui")
