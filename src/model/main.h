@@ -15,8 +15,11 @@
 
 // PROJECT'S HEADERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #include "include/common.h"
+#include "include/errors.h"
 
 // CONSTANTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+const size_t MAX_VERTICES = 10000;
+const size_t MAX_FACES = 100000;
 
 // STRUCTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 namespace s21 {
@@ -58,9 +61,9 @@ class WireframeObject {
   static void ResetIdCounter() { next_id = 0; }
 
  protected:
-  int AllocateMemory(std::ifstream &file);
-  void GetValues(std::ifstream &file);
-  void AssignName(const std::string file_path);
+  ErrorCode AllocateMemory(std::ifstream &file);
+  void GetValues(std::ifstream &file) noexcept;
+  void AssignName(const std::string file_path) noexcept;
 
  protected:
   static int next_id;
@@ -71,97 +74,32 @@ class WireframeObject {
   std::vector<Coordinate> normals;
   std::vector<Face> faces;
   Counter count;
-  const size_t MAX_VERTICES = 10000;
-  const size_t MAX_FACES = 100000;
 
  protected:
-  using CheckFunction = bool (WireframeObject::*)(std::istringstream &);
-
-  bool CheckVertex(std::istringstream &iss) {
-    float x, y, z;
-    if (!(iss >> x >> y >> z)) return false;
-    count.v++;
-    return true;
-  }
-
-  bool CheckTexture(std::istringstream &iss) {
-    float u, v;
-    if (!(iss >> u >> v)) return false;
-    count.vt++;
-    return true;
-  }
-
-  bool CheckNormal(std::istringstream &iss) {
-    float x, y, z;
-    if (!(iss >> x >> y >> z)) return false;
-    count.vn++;
-    return true;
-  }
-
-  bool CheckFace(std::istringstream &iss) {
-    int v, vt, vn;
-    char slash;
-    for (int i = 0; i < 3; i++) {
-      if (!(iss >> v >> slash >> vt >> slash >> vn)) return false;
-      if (v > count.v || vt > count.vt || vn > count.vn) return false;
-    }
-    count.f++;
-    return true;
-  }
-
-  bool ValidateCounters() const {
-    return count.v > 0 && count.vt > 0 && count.vn > 0 && count.f > 0 &&
-           count.v <= MAX_VERTICES && count.f <= MAX_FACES;
-  }
-
-  bool ParseCoordinate(std::istringstream &iss, Coordinate &out_coord) {
-    if (!(iss >> out_coord.x >> out_coord.y >> out_coord.z)) {
-      return false;
-    }
-    return out_coord.IsValid();
-  }
-
-  bool ParseTextureCoordinate(std::istringstream &iss,
-                              TextureCoordinate &out_tex_coord) {
-    if (!(iss >> out_tex_coord.u >> out_tex_coord.v)) {
-      return false;
-    }
-    return out_tex_coord.IsValid();
-  }
-
-  bool ParseFace(std::istringstream &iss, Face &out_face) {
-    char slash;
-    int v, vt, vn;
-    for (int i = 0; i < 3; i++) {
-      if (!(iss >> v >> slash >> vt >> slash >> vn)) {
-        return false;
-      }
-      if (v <= 0 || vt <= 0 || vn <= 0 || v > count.v || vt > count.vt ||
-          vn > count.vn) {
-        return false;
-      }
-      out_face.position[i] = vertices[v - 1];
-      out_face.texture[i] = textures[vt - 1];
-    }
-    out_face.normal = normals[vn - 1];
-    return true;
-  }
+  // helper functions
+  using InputFunction = bool (WireframeObject::*)(std::istringstream &);
+  using ParseFunction = void (WireframeObject::*)(std::istringstream &);
+  bool CheckVertex(std::istringstream &iss);
+  bool CheckTexture(std::istringstream &iss);
+  bool CheckNormal(std::istringstream &iss);
+  bool CheckFace(std::istringstream &iss);
+  bool ValidateCounters() const;
+  void ParseVertex(std::istringstream &iss);
+  void ParseTextureCoordinate(std::istringstream &iss);
+  void ParseNormal(std::istringstream &iss);
+  void ParseFace(std::istringstream &iss);
 };  // class WireframeObject
 
 // FUNCTIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 WireframeObject::WireframeObject(const std::string file_path) {
   std::ifstream file(file_path);
   if (!file.is_open()) {
-    std::cout << "in WireframeObject: Could not open file"
-              << "\n";
+    ErrorLogger::LogError("WireframeObject", "File not found");
   } else {
-    if (AllocateMemory(file) == ERROR_CODE_SUCCESS) {
+    if (AllocateMemory(file) == success_code) {
       id = next_id++;
       GetValues(file);
       AssignName(file_path);
-    } else {
-      std::cout << "in WireframeObject: Bad .obj file"
-                << "\n";
     }
     file.close();
   }
@@ -177,15 +115,15 @@ WireframeObject::~WireframeObject() {
   name.clear();
 }
 
-int WireframeObject::AllocateMemory(std::ifstream &file) {
-  const std::map<std::string, CheckFunction> inspect_types = {
+ErrorCode WireframeObject::AllocateMemory(std::ifstream &file) {
+  const std::map<std::string, InputFunction> inspect_types = {
       {"v", &WireframeObject::CheckVertex},
       {"vt", &WireframeObject::CheckTexture},
       {"vn", &WireframeObject::CheckNormal},
       {"f", &WireframeObject::CheckFace}};
 
   std::string line;
-  int result_code = ERROR_CODE_SUCCESS;
+  ErrorCode result_code = success_code;
 
   while (std::getline(file, line)) {
     if (line.empty() || line[0] == '#') continue;
@@ -196,25 +134,26 @@ int WireframeObject::AllocateMemory(std::ifstream &file) {
 
     auto it = inspect_types.find(prefix);
     if (it != inspect_types.end() && !(this->*(it->second))(iss)) {
-      std::cout << "in AllocateMemory: Invalid" << prefix << "format in file"
-                << "\n";
-      result_code = ERROR_CODE_INVALID_FORMAT;
+      QString log_message = QString("Invalid format in line: %1")
+                                .arg(QString::fromStdString(line));
+      ErrorLogger::LogError("AllocateMemory", log_message);
+      result_code = invalid_format;
       break;
     }
   }
 
   if (!ValidateCounters()) {
-    result_code = ERROR_CODE_INVALID_FORMAT;
+    result_code = invalid_format;
   }
 
-  if (result_code == ERROR_CODE_SUCCESS) {
+  if (result_code == success_code) {
     try {
       vertices.reserve(count.v);
       textures.reserve(count.vt);
       normals.reserve(count.vn);
       faces.reserve(count.f);
     } catch (const std::bad_alloc &) {
-      result_code = ERROR_CODE_MEMORY_ERROR;
+      result_code = memory_error;
     }
   }
 
@@ -223,7 +162,13 @@ int WireframeObject::AllocateMemory(std::ifstream &file) {
   return result_code;
 }
 
-void WireframeObject::GetValues(std::ifstream &file) {
+void WireframeObject::GetValues(std::ifstream &file) noexcept {
+  const std::map<std::string, ParseFunction> parse_types = {
+      {"v", &WireframeObject::ParseVertex},
+      {"vt", &WireframeObject::ParseTextureCoordinate},
+      {"vn", &WireframeObject::ParseNormal},
+      {"f", &WireframeObject::ParseFace}};
+
   std::string line;
 
   while (std::getline(file, line)) {
@@ -233,49 +178,94 @@ void WireframeObject::GetValues(std::ifstream &file) {
     std::string prefix;
     iss >> prefix;
 
-    if (prefix == "v") {
-      Coordinate vertex;
-      if (ParseCoordinate(iss, vertex)) {
-        vertices.push_back(vertex);
-      } else {
-        std::cout << "in GetValues: Invalid vertex format in file"
-                  << "\n";
-      }
-    } else if (prefix == "vt") {
-      TextureCoordinate texture;
-      if (ParseTextureCoordinate(iss, texture)) {
-        textures.push_back(texture);
-      } else {
-        std::cout << "in GetValues: Invalid texture coordinate format in file"
-                  << "\n";
-      }
-    } else if (prefix == "vn") {
-      Coordinate normal;
-      if (ParseCoordinate(iss, normal)) {
-        normals.push_back(normal);
-      } else {
-        std::cout << "in GetValues: Invalid normal format in file"
-                  << "\n";
-      }
-    } else if (prefix == "f") {
-      Face face;
-      if (ParseFace(iss, face)) {
-        faces.push_back(face);
-      } else {
-        std::cout << "in GetValues: Invalid face format in file"
-                  << "\n";
-      }
-    }
+    auto it = parse_types.find(prefix);
+    if (it != parse_types.end()) (this->*(it->second))(iss);
   }
 }
 
-void WireframeObject::AssignName(const std::string file_path) {
+void WireframeObject::AssignName(const std::string file_path) noexcept {
   size_t last_slash = file_path.find_last_of("/\\");
   if (last_slash != std::string::npos) {
     name = file_path.substr(last_slash + 1);
   } else {
     name = file_path;
   }
+}
+
+bool WireframeObject::CheckVertex(std::istringstream &iss) {
+  Coordinate vertex;
+  if (!(iss >> vertex.x >> vertex.y >> vertex.z)) return false;
+  if (!vertex.IsValid()) return false;
+  count.v++;
+  return true;
+}
+
+bool WireframeObject::CheckTexture(std::istringstream &iss) {
+  TextureCoordinate texture;
+  if (!(iss >> texture.u >> texture.v)) return false;
+  if (!texture.IsValid()) return false;
+  count.vt++;
+  return true;
+}
+
+bool WireframeObject::CheckNormal(std::istringstream &iss) {
+  Coordinate normal;
+  if (!(iss >> normal.x >> normal.y >> normal.z)) return false;
+  if (!normal.IsValid()) return false;
+  if (std::abs(normal.x) > 1.0f || std::abs(normal.y) > 1.0f ||
+      std::abs(normal.z) > 1.0f) {
+    return false;  // Normal vector components should be in [-1, 1]
+  }
+  count.vn++;
+  return true;
+}
+
+bool WireframeObject::CheckFace(std::istringstream &iss) {
+  int v, vt, vn;
+  char slash;
+  for (int i = 0; i < 3; i++) {
+    if (!(iss >> v >> slash >> vt >> slash >> vn)) return false;
+    if (v > count.v || vt > count.vt || vn > count.vn) return false;
+    if (v < 1 || vt < 1 || vn < 1) return false;
+  }
+  count.f++;
+  return true;
+}
+
+bool WireframeObject::ValidateCounters() const {
+  return count.v > 0 && count.vt > 0 && count.vn > 0 && count.f > 0 &&
+         count.v <= MAX_VERTICES && count.f <= MAX_FACES;
+}
+
+void WireframeObject::ParseVertex(std::istringstream &iss) {
+  Coordinate vertex;
+  iss >> vertex.x >> vertex.y >> vertex.z;
+  vertices.push_back(vertex);
+}
+
+void WireframeObject::ParseTextureCoordinate(std::istringstream &iss) {
+  TextureCoordinate texture;
+  iss >> texture.u >> texture.v;
+  textures.push_back(texture);
+}
+
+void WireframeObject::ParseNormal(std::istringstream &iss) {
+  Coordinate normal;
+  iss >> normal.x >> normal.y >> normal.z;
+  normals.push_back(normal);
+}
+
+void WireframeObject::ParseFace(std::istringstream &iss) {
+  Face face;
+  char slash;
+  int v, vt, vn;
+  for (int i = 0; i < 3; i++) {
+    iss >> v >> slash >> vt >> slash >> vn;
+    face.position[i] = vertices[v - 1];
+    face.texture[i] = textures[vt - 1];
+  }
+  face.normal = normals[vn - 1];
+  faces.push_back(face);
 }
 
 int WireframeObject::next_id = 0;

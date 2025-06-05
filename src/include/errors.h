@@ -7,21 +7,17 @@
 #include <QString>
 
 namespace s21 {
-enum ParserStatus {
-  Success,
-  FileNotFound,
-  InvalidFormat,
-  InsufficientData,
-  MemoryError,
-  InvalidVertex,
-  InvalidTexture,
-  InvalidNormal,
-  InvalidFace
-};
+typedef enum {
+  success_code = 0,
+  file_not_found,
+  invalid_format,
+  memory_error,
+  unknown_error
+} ErrorCode;
 
 class ErrorLogger {
  public:
-  static void LogError(const QString& component, const QString& message) {
+  void LogError(const QString& component, const QString& message) {
     QString log_message =
         QString("[%1] %2: %3\n")
             .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
@@ -38,38 +34,21 @@ class ErrorLogger {
     qDebug() << log_message;
   }
 
-  static QString GetStatusMessage(ParserStatus status) {
+  QString GetStatusMessage(ErrorCode status) {
     switch (status) {
-      case ParserStatus::Success:
+      case ErrorCode::success_code:
         return "Operation successful";
-      case ParserStatus::FileNotFound:
+      case ErrorCode::file_not_found:
         return "File not found";
-      case ParserStatus::InvalidFormat:
+      case ErrorCode::invalid_format:
         return "Invalid file format";
-      case ParserStatus::InsufficientData:
-        return "Insufficient data in file";
-      case ParserStatus::MemoryError:
+      case ErrorCode::memory_error:
         return "Memory allocation error";
-      case ParserStatus::InvalidVertex:
-        return "Invalid vertex data";
-      case ParserStatus::InvalidTexture:
-        return "Invalid texture coordinates";
-      case ParserStatus::InvalidNormal:
-        return "Invalid normal data";
-      case ParserStatus::InvalidFace:
-        return "Invalid face data";
       default:
         return "Unknown error";
     }
   }
-};
-
-struct ParserResult {
-  ParserStatus status{ParserStatus::Success};
-  QString message;
-
-  bool isSuccess() const { return status == ParserStatus::Success; }
-};
+};  // class ErrorLogger
 }  // namespace s21
 
 #endif  // INCLUDE_ERRORS_H

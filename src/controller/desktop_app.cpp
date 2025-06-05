@@ -7,6 +7,5 @@ int main(int argc, char *argv[]) {
   // currentWidget.show();
   // return app.exec();
   s21::WireframeObject object("samples/most_simple.obj");
-  object.PrintInfo();
   return 0;
 }
