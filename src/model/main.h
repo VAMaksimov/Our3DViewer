@@ -94,7 +94,7 @@ class WireframeObject {
 WireframeObject::WireframeObject(const std::string file_path) {
   std::ifstream file(file_path);
   if (!file.is_open()) {
-    ErrorLogger::LogError("WireframeObject", "File not found");
+    LogError("WireframeObject", "File not found");
   } else {
     if (AllocateMemory(file) == success_code) {
       id = next_id++;
@@ -136,7 +136,7 @@ ErrorCode WireframeObject::AllocateMemory(std::ifstream &file) {
     if (it != inspect_types.end() && !(this->*(it->second))(iss)) {
       QString log_message = QString("Invalid format in line: %1")
                                 .arg(QString::fromStdString(line));
-      ErrorLogger::LogError("AllocateMemory", log_message);
+      LogError("AllocateMemory", log_message);
       result_code = invalid_format;
       break;
     }

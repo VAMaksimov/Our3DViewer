@@ -2,7 +2,7 @@
 
 namespace s21 {
 
-ViewerWidget::ViewerWidget(QWidget *parent) : QWidget(parent) {
+ViewerWidget::ViewerWidget(QWidget* parent) : QWidget(parent) {
   InitializeUI();
   CreateLayouts();
 }
@@ -11,14 +11,15 @@ ViewerWidget::~ViewerWidget() {}
 
 /**
  * @brief Initializes the user interface elements of the viewer widget
- * 
+ *
  * Creates and sets up the basic UI components including:
  * - Open file button
  * - Object information label
  * - Left panel widget
  * - Main panel widget
- * 
- * Also establishes signal-slot connection for the "open file" button click event
+ *
+ * Also establishes signal-slot connection for the "open file" button click
+ * event
  */
 void ViewerWidget::InitializeUI() {
   open_file_button = new QPushButton("Open File", this);
@@ -26,7 +27,8 @@ void ViewerWidget::InitializeUI() {
   left_panel = new QWidget(this);
   main_panel = new QWidget(this);
 
-  connect(open_file_button, &QPushButton::clicked, this, &ViewerWidget::OpenFile);
+  connect(open_file_button, &QPushButton::clicked, this,
+          &ViewerWidget::OpenFile);
 }
 
 void ViewerWidget::CreateLayouts() {
@@ -49,10 +51,11 @@ void ViewerWidget::CreateLayouts() {
 
 void ViewerWidget::OpenFile() {
   QString file_path = QFileDialog::getOpenFileName(this, "Open Object File", "",
-                                                "Object Files (*.obj)");
+                                                   "Object Files (*.obj)");
   if (!file_path.isEmpty()) {
     try {
-      current_object = std::make_unique<WireframeObject>(file_path.toStdString());
+      current_object =
+          std::make_unique<WireframeObject>(file_path.toStdString());
       UpdateObjectInfo();
     } catch (const std::exception& e) {
       object_info_label->setText("Error loading file: " + QString(e.what()));
@@ -63,8 +66,8 @@ void ViewerWidget::OpenFile() {
 void ViewerWidget::UpdateObjectInfo() {
   if (current_object) {
     QString info = QString("Object Name: %1\nObject ID: %2")
-                      .arg(QString::fromStdString(current_object->GetName()))
-                      .arg(current_object->GetId());
+                       .arg(QString::fromStdString(current_object->GetName()))
+                       .arg(current_object->GetId());
     object_info_label->setText(info);
   }
 }
