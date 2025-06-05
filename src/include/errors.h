@@ -1,7 +1,6 @@
 #ifndef INCLUDE_ERRORS_H
 #define INCLUDE_ERRORS_H
 
-#include <QDateTime>
 #include <QDebug>
 #include <QFile>
 #include <QString>
@@ -18,9 +17,9 @@ typedef enum {
 class ErrorLogger {
  public:
   void LogError(const QString& component, const QString& message) {
+    // .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
     QString log_message =
-        QString("[%1] %2: %3\n")
-            .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+        QString("%2: %3\n")
             .arg(component)
             .arg(message);
 

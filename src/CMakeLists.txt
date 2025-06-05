@@ -83,4 +83,3 @@ target_link_libraries(3d_viewer_gui PRIVATE
 # --- Output ---
 message(STATUS "Configured 3D Viewer Project")
 message(STATUS "GUI Target: 3d_viewer_gui")
-message(STATUS "Test Target: viewer_tests")
