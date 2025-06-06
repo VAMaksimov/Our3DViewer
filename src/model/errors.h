@@ -14,7 +14,16 @@ typedef enum {
   unknown_error
 } ErrorCode;
 
-void LogError(const QString& component, const QString& message) {
+/**
+ * @brief Logs error messages to a file and outputs them to the console
+ * @param component The component where the error occurred
+ * @param message The error message to log
+ * 
+ * @note `static` ensures that this function is only visible within this header.
+ * It prevents multiple definitions if this header is included in multiple
+ * translation units.
+ */
+static void LogError(const QString& component, const QString& message) {
   // .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
   QString log_message = QString("%2: %3\n").arg(component).arg(message);
 
@@ -28,7 +37,7 @@ void LogError(const QString& component, const QString& message) {
   qDebug() << log_message;
 }
 
-QString GetStatusMessage(ErrorCode status) {
+static QString GetStatusMessage(ErrorCode status) {
   switch (status) {
     case ErrorCode::success_code:
       return "Operation successful";

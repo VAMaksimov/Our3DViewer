@@ -12,7 +12,7 @@
 #include <QWidget>
 #include <memory>
 
-#include "model/main.h"
+#include "model/parser.h"
 
 namespace s21 {
 /**

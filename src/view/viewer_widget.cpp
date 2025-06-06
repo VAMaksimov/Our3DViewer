@@ -1,4 +1,4 @@
-#include "viewer_widget.h"
+#include "view/viewer_widget.h"
 
 namespace s21 {
 
