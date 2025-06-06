@@ -32,13 +32,12 @@ void LogError(const QString& component, const ErrorCode status);
 static QString FormatErrorMessage(const QString& component,
                                   const QString& message) {
   return QString("[%1] %2: %3\n")
+      .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
       .arg(component)
-      .arg(message)
-      .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+      .arg(message);
 }
 
 QString GetStatusMessage(ErrorCode status);
-QString GetLastErrorMessage();
 }  // namespace s21
 
 #endif  // MODEL_ERRORS_H

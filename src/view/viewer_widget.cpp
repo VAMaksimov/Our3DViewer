@@ -14,9 +14,12 @@ void ViewerWidget::InitializeUI() {
   object_info_label = new QLabel("No object loaded", this);
   left_panel = new QWidget(this);
   main_panel = new QWidget(this);
-
+  log_viewer = new QTextEdit(this);
+  
   connect(open_file_button, &QPushButton::clicked, this,
           &ViewerWidget::OpenFile);
+
+  UpdateLogViewer();
 }
 
 void ViewerWidget::CreateLayouts() {
@@ -25,10 +28,13 @@ void ViewerWidget::CreateLayouts() {
   leftLayout->addWidget(open_file_button);
   leftLayout->addStretch();
   left_panel->setFixedWidth(200);
-
+  
   // Main panel layout
   QVBoxLayout* main_layout = new QVBoxLayout(main_panel);
   main_layout->addWidget(object_info_label);
+  log_viewer->setReadOnly(true);
+  log_viewer->setFixedHeight(150);
+  main_layout->addWidget(log_viewer);
   main_layout->addStretch();
 
   // Main widget layout
@@ -67,6 +73,19 @@ void ViewerWidget::UpdateObjectInfo() {
     object_info_label->setText(info);
   } else {
     ShowError();
+  }
+}
+
+void ViewerWidget::UpdateLogViewer() {
+  QFile file("logs/debug.log");
+  if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    QTextStream in(&file);
+    log_viewer->setText(in.readAll());
+    file.close();
+
+    // Scroll to bottom to show latest logs
+    QScrollBar* scroll = log_viewer->verticalScrollBar();
+    scroll->setValue(scroll->maximum());
   }
 }
 

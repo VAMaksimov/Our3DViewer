@@ -50,11 +50,13 @@ class ViewerWidget : public QWidget {
   void InitializeUI();
   void CreateLayouts();
   void ShowError();
+  void UpdateLogViewer();
 
   QPushButton* open_file_button;
   QLabel* object_info_label;
   QWidget* left_panel;
   QWidget* main_panel;
+  QTextEdit* log_viewer;
   std::unique_ptr<WireframeObject> current_object;
 };
 
