@@ -81,10 +81,6 @@ void ViewerWidget::UpdateLogViewer() {
     QTextStream in(&file);
     log_viewer->setText(in.readAll());
     file.close();
-
-    // Scroll to bottom to show latest logs
-    // QScrollBar* scroll = log_viewer->verticalScrollBar();
-    // scroll->setValue(scroll->maximum());
   }
 }
 
