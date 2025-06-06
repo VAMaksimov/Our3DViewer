@@ -3,13 +3,13 @@
 namespace s21 {
 
 ViewerWidget::ViewerWidget(QWidget* parent) : QWidget(parent) {
-  InitializeUI();
-  CreateLayouts();
+  InitializeWidgets();
+  DefineLayouts();
 }
 
 ViewerWidget::~ViewerWidget() {}
 
-void ViewerWidget::InitializeUI() {
+void ViewerWidget::InitializeWidgets() {
   open_file_button = new QPushButton("Open File", this);
   object_info_label = new QLabel("No object loaded", this);
   left_panel = new QWidget(this);
@@ -20,7 +20,7 @@ void ViewerWidget::InitializeUI() {
           &ViewerWidget::OpenFile);
 }
 
-void ViewerWidget::CreateLayouts() {
+void ViewerWidget::DefineLayouts() {
   // Left panel layout
   QVBoxLayout* left_layout = new QVBoxLayout(left_panel);
   left_layout->addWidget(open_file_button);
@@ -46,6 +46,8 @@ void ViewerWidget::ShowError() {
   QFile file("logs/debug.log");
   if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     QTextStream in(&file);
+    log_viewer->setText(in.readAll());
+    in.seek(0);  // Reset the stream to read from the beginning
     while (!in.atEnd()) {
       error_message = in.readLine();
     }
@@ -71,17 +73,6 @@ void ViewerWidget::UpdateObjectInfo() {
     object_info_label->setText(info);
   } else {
     ShowError();
-    UpdateLogViewer();
   }
 }
-
-void ViewerWidget::UpdateLogViewer() {
-  QFile file("logs/debug.log");
-  if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    QTextStream in(&file);
-    log_viewer->setText(in.readAll());
-    file.close();
-  }
-}
-
 }  // namespace s21
