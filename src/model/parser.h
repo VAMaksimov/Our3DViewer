@@ -66,7 +66,7 @@ class WireframeObject {
 
  protected:
   static int next_id;
-  int id;
+  int id = -1;
   std::string name;
   std::vector<Coordinate> vertices;
   std::vector<TextureCoordinate> textures;

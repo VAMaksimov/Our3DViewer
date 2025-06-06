@@ -15,27 +15,25 @@ void ViewerWidget::InitializeUI() {
   left_panel = new QWidget(this);
   main_panel = new QWidget(this);
   log_viewer = new QTextEdit(this);
-  
+
   connect(open_file_button, &QPushButton::clicked, this,
           &ViewerWidget::OpenFile);
-
-  UpdateLogViewer();
 }
 
 void ViewerWidget::CreateLayouts() {
   // Left panel layout
-  QVBoxLayout* leftLayout = new QVBoxLayout(left_panel);
-  leftLayout->addWidget(open_file_button);
-  leftLayout->addStretch();
+  QVBoxLayout* left_layout = new QVBoxLayout(left_panel);
+  left_layout->addWidget(open_file_button);
+  left_layout->addStretch();
   left_panel->setFixedWidth(200);
-  
+
   // Main panel layout
   QVBoxLayout* main_layout = new QVBoxLayout(main_panel);
   main_layout->addWidget(object_info_label);
+  main_layout->addStretch();
   log_viewer->setReadOnly(true);
   log_viewer->setFixedHeight(150);
   main_layout->addWidget(log_viewer);
-  main_layout->addStretch();
 
   // Main widget layout
   QHBoxLayout* main_widget_layout = new QHBoxLayout(this);
@@ -73,6 +71,7 @@ void ViewerWidget::UpdateObjectInfo() {
     object_info_label->setText(info);
   } else {
     ShowError();
+    UpdateLogViewer();
   }
 }
 
@@ -82,10 +81,6 @@ void ViewerWidget::UpdateLogViewer() {
     QTextStream in(&file);
     log_viewer->setText(in.readAll());
     file.close();
-
-    // Scroll to bottom to show latest logs
-    QScrollBar* scroll = log_viewer->verticalScrollBar();
-    scroll->setValue(scroll->maximum());
   }
 }
 
