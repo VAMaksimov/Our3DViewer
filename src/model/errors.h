@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QFile>
+#include <QMessageBox>
 #include <QString>
 
 namespace s21 {

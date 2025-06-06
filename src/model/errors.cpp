@@ -1,16 +1,13 @@
 #include "model/errors.h"
 
 namespace s21 {
-static QString last_error_message;
-
 void LogError(const QString& component, const QString& message) {
   QString log_message = FormatErrorMessage(component, message);
-  last_error_message = log_message;
 
   QFile file("logs/debug.log");
   if (file.open(QIODevice::Append | QIODevice::Text)) {
-    QTextStream stream(&file);
-    stream << log_message;
+    QTextStream out(&file);
+    out << log_message;
     file.close();
   }
 
@@ -35,9 +32,5 @@ QString GetStatusMessage(ErrorCode status) {
     default:
       return "Unknown error";
   }
-}
-
-QString GetLastErrorMessage() {
-  return last_error_message;
 }
 }  // namespace s21

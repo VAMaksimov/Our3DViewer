@@ -38,7 +38,15 @@ void ViewerWidget::CreateLayouts() {
 }
 
 void ViewerWidget::ShowError() {
-  QString error_message = GetLastErrorMessage();
+  QString error_message;
+  QFile file("logs/debug.log");
+  if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+      error_message = in.readLine();
+    }
+    file.close();
+  }
   if (!error_message.isEmpty()) {
     QMessageBox::critical(this, "Error", error_message);
   }
@@ -52,7 +60,7 @@ void ViewerWidget::OpenFile() {
 }
 
 void ViewerWidget::UpdateObjectInfo() {
-  if (current_object->GetId() > 0) {
+  if (current_object->GetId() >= 0) {
     QString info = QString("Object Name: %1\nObject ID: %2")
                        .arg(QString::fromStdString(current_object->GetName()))
                        .arg(current_object->GetId());

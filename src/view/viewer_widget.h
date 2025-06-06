@@ -49,7 +49,7 @@ class ViewerWidget : public QWidget {
    */
   void InitializeUI();
   void CreateLayouts();
-  void ShowError(const QString& component, const QString& message);
+  void ShowError();
 
   QPushButton* open_file_button;
   QLabel* object_info_label;
