@@ -1,6 +1,7 @@
 #ifndef MODEL_ERRORS_H
 #define MODEL_ERRORS_H
 
+#include <QDateTime>
 #include <QDebug>
 #include <QFile>
 #include <QString>
@@ -18,39 +19,25 @@ typedef enum {
  * @brief Logs error messages to a file and outputs them to the console
  * @param component The component where the error occurred
  * @param message The error message to log
- * 
+ *
  * @note `static` ensures that this function is only visible within this header.
  * It prevents multiple definitions if this header is included in multiple
  * translation units.
  */
-static void LogError(const QString& component, const QString& message) {
-  // .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-  QString log_message = QString("%2: %3\n").arg(component).arg(message);
+void LogError(const QString& component, const QString& message);
 
-  QFile file("logs/debug.log");
-  if (file.open(QIODevice::Append | QIODevice::Text)) {
-    QTextStream stream(&file);
-    stream << log_message;
-    file.close();
-  }
+void LogError(const QString& component, const ErrorCode status);
 
-  qDebug() << log_message;
+static QString FormatErrorMessage(const QString& component,
+                                  const QString& message) {
+  return QString("[%1] %2: %3\n")
+      .arg(component)
+      .arg(message)
+      .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
 }
 
-static QString GetStatusMessage(ErrorCode status) {
-  switch (status) {
-    case ErrorCode::success_code:
-      return "Operation successful";
-    case ErrorCode::file_not_found:
-      return "File not found";
-    case ErrorCode::invalid_format:
-      return "Invalid file format";
-    case ErrorCode::memory_error:
-      return "Memory allocation error";
-    default:
-      return "Unknown error";
-  }
-}
+QString GetStatusMessage(ErrorCode status);
+QString GetLastErrorMessage();
 }  // namespace s21
 
 #endif  // MODEL_ERRORS_H

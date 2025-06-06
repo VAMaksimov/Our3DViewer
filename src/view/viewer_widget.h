@@ -35,8 +35,21 @@ class ViewerWidget : public QWidget {
   void UpdateObjectInfo();
 
  private:
+  /**
+   * @brief Initializes the user interface elements of the viewer widget
+   *
+   * Creates and sets up the basic UI components including:
+   * - Open file button
+   * - Object information label
+   * - Left panel widget
+   * - Main panel widget
+   *
+   * Also establishes signal-slot connection for the "open file" button click
+   * event
+   */
   void InitializeUI();
   void CreateLayouts();
+  void ShowError(const QString& component, const QString& message);
 
   QPushButton* open_file_button;
   QLabel* object_info_label;

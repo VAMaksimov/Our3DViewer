@@ -9,18 +9,6 @@ ViewerWidget::ViewerWidget(QWidget* parent) : QWidget(parent) {
 
 ViewerWidget::~ViewerWidget() {}
 
-/**
- * @brief Initializes the user interface elements of the viewer widget
- *
- * Creates and sets up the basic UI components including:
- * - Open file button
- * - Object information label
- * - Left panel widget
- * - Main panel widget
- *
- * Also establishes signal-slot connection for the "open file" button click
- * event
- */
 void ViewerWidget::InitializeUI() {
   open_file_button = new QPushButton("Open File", this);
   object_info_label = new QLabel("No object loaded", this);
@@ -49,26 +37,28 @@ void ViewerWidget::CreateLayouts() {
   main_widget_layout->addWidget(main_panel);
 }
 
-void ViewerWidget::OpenFile() {
-  QString file_path = QFileDialog::getOpenFileName(this, "Open Object File", "",
-                                                   "Object Files (*.obj)");
-  if (!file_path.isEmpty()) {
-    try {
-      current_object =
-          std::make_unique<WireframeObject>(file_path.toStdString());
-      UpdateObjectInfo();
-    } catch (const std::exception& e) {
-      object_info_label->setText("Error loading file: " + QString(e.what()));
-    }
+void ViewerWidget::ShowError() {
+  QString error_message = GetLastErrorMessage();
+  if (!error_message.isEmpty()) {
+    QMessageBox::critical(this, "Error", error_message);
   }
 }
 
+void ViewerWidget::OpenFile() {
+  QString file_path = QFileDialog::getOpenFileName(this, "Open Object File", "",
+                                                   "Object Files (*.obj)");
+  current_object = std::make_unique<WireframeObject>(file_path.toStdString());
+  UpdateObjectInfo();
+}
+
 void ViewerWidget::UpdateObjectInfo() {
-  if (current_object) {
+  if (current_object->GetId() > 0) {
     QString info = QString("Object Name: %1\nObject ID: %2")
                        .arg(QString::fromStdString(current_object->GetName()))
                        .arg(current_object->GetId());
     object_info_label->setText(info);
+  } else {
+    ShowError();
   }
 }
 
