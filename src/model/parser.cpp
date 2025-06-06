@@ -1,6 +1,8 @@
 #include "model/parser.h"
 
-namepace s21 {
+namespace s21 {
+int WireframeObject::next_id = 0;
+
 WireframeObject::WireframeObject(const std::string file_path) {
   std::ifstream file(file_path);
   if (!file.is_open()) {

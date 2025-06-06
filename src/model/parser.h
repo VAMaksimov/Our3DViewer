@@ -88,8 +88,6 @@ class WireframeObject {
   void ParseNormal(std::istringstream &iss);
   void ParseFace(std::istringstream &iss);
 };  // class WireframeObject
-
-int WireframeObject::next_id = 0;
 }  // namespace s21
 
 #endif  // MODEL_PARSER_H
