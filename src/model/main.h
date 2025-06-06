@@ -14,8 +14,7 @@
 #include <vector>
 
 // PROJECT'S HEADERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#include "include/common.h"
-#include "include/errors.h"
+#include "model/errors.h"
 
 // CONSTANTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const size_t MAX_VERTICES = 10000;

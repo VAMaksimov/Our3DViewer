@@ -1,5 +1,5 @@
-#ifndef INCLUDE_ERRORS_H
-#define INCLUDE_ERRORS_H
+#ifndef MODEL_ERRORS_H
+#define MODEL_ERRORS_H
 
 #include <QDebug>
 #include <QFile>
@@ -44,4 +44,4 @@ QString GetStatusMessage(ErrorCode status) {
 }
 }  // namespace s21
 
-#endif  // INCLUDE_ERRORS_H
+#endif  // MODEL_ERRORS_H

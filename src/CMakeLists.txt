@@ -30,15 +30,19 @@ file(GLOB MODEL_SOURCES
     model/*.cpp
 )
 
+file(GLOB MODEL_HEADERS
+    model/*.h
+)
+
 # Create a static library for the core model logic
 add_library(viewer_model STATIC
     ${MODEL_SOURCES}
+    ${MODEL_HEADERS}
 )
 
 # Ensure the library itself knows where its headers are (relative to include/)
 # PUBLIC means consumers of this library also get this include path
 target_include_directories(viewer_model PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/model
 )
 
@@ -58,18 +62,22 @@ file(GLOB VIEW_HEADERS
     view/*.h
 )
 
+file(GLOB CONTROLLER_HEADERS
+    controller/*.h
+)
+
 # Add the main GUI executable
 add_executable(3d_viewer_gui
     ${VIEW_SOURCES}
     ${CONTROLLER_SOURCES}
     ${VIEW_HEADERS}
+    ${CONTROLLER_HEADERS}
 )
 
 # Add include directories specific to the GUI part
 target_include_directories(3d_viewer_gui PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/view
     ${CMAKE_CURRENT_SOURCE_DIR}/controller
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 # Link against the model library and Qt modules
