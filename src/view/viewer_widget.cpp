@@ -58,13 +58,6 @@ void ViewerWidget::ShowError() {
   }
 }
 
-void ViewerWidget::OpenFile() {
-  QString file_path = QFileDialog::getOpenFileName(this, "Open Object File", "",
-                                                   "Object Files (*.obj)");
-  current_object = std::make_unique<WireframeObject>(file_path.toStdString());
-  UpdateObjectInfo();
-}
-
 void ViewerWidget::UpdateObjectInfo() {
   if (current_object->GetId() >= 0) {
     QString info = QString("Object Name: %1\nObject ID: %2")

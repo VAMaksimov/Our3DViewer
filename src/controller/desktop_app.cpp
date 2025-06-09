@@ -1,5 +1,5 @@
-#include "model/parser.h"
 #include "model/errors.h"
+#include "model/parser.h"
 #include "view/viewer_widget.h"
 
 int main(int argc, char *argv[]) {
