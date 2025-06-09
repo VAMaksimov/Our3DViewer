@@ -58,6 +58,8 @@ class WireframeObject {
   std::string GetName() const { return name; }
   int GetId() const { return id; }
   static void ResetIdCounter() { next_id = 0; }
+  const std::vector<Coordinate> &GetVertices() const { return vertices; }
+  const std::vector<Face> &GetFaces() const { return faces; }
 
  protected:
   ErrorCode AllocateMemory(std::ifstream &file);

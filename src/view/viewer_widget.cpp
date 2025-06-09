@@ -60,9 +60,10 @@ void ViewerWidget::ShowError() {
 
 void ViewerWidget::UpdateObjectInfo() {
   if (current_object->GetId() >= 0) {
-    QString info = QString("Object Name: %1\nObject ID: %2")
+    QString info = QString("Object Name: %1\nObject ID: %2\nNo of faces: %3")
                        .arg(QString::fromStdString(current_object->GetName()))
-                       .arg(current_object->GetId());
+                       .arg(current_object->GetId())
+                       .arg(current_object->GetFaces().size());
     object_info_label->setText(info);
   } else {
     ShowError();
