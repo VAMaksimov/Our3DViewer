@@ -1,8 +1,5 @@
 #include "model/errors.h"
 
-#include <fstream>
-#include <iostream>
-
 namespace s21 {
 
 void LogError(const std::string& component, const std::string& message) {

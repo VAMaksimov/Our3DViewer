@@ -17,8 +17,8 @@
 #include "model/errors.h"
 
 // CONSTANTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-const size_t MAX_VERTICES = 10000;
-const size_t MAX_FACES = 100000;
+const int MAX_VERTICES = 10000;
+const int MAX_FACES = 100000;
 
 // STRUCTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 namespace s21 {
