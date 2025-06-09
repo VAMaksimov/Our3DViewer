@@ -1,25 +1,25 @@
 #include "model/errors.h"
 
 namespace s21 {
-void LogError(const QString& component, const QString& message) {
-  QString log_message = FormatErrorMessage(component, message);
 
-  QFile file("logs/debug.log");
-  if (file.open(QIODevice::Append | QIODevice::Text)) {
-    QTextStream out(&file);
-    out << log_message;
+void LogError(const std::string& component, const std::string& message) {
+  std::string log_message = FormatErrorMessage(component, message);
+
+  std::ofstream file("logs/debug.log", std::ios::app);
+  if (file.is_open()) {
+    file << log_message;
     file.close();
   }
 
-  qDebug() << log_message;
+  std::cerr << log_message;
 }
 
-void LogError(const QString& component, const ErrorCode status) {
-  QString message = GetStatusMessage(status);
+void LogError(const std::string& component, const ErrorCode status) {
+  std::string message = GetStatusMessage(status);
   LogError(component, message);
 }
 
-QString GetStatusMessage(ErrorCode status) {
+std::string GetStatusMessage(ErrorCode status) {
   switch (status) {
     case ErrorCode::success_code:
       return "Operation successful";
@@ -33,4 +33,18 @@ QString GetStatusMessage(ErrorCode status) {
       return "Unknown error";
   }
 }
+
+std::string GetCurrentTimestamp() {
+  auto now = std::chrono::system_clock::now();
+  auto time = std::chrono::system_clock::to_time_t(now);
+  std::stringstream ss;
+  ss << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S");
+  return ss.str();
+}
+
+std::string FormatErrorMessage(const std::string& component,
+                                      const std::string& message) {
+  return "[" + GetCurrentTimestamp() + "] " + component + ": " + message + "\n";
+}
+
 }  // namespace s21

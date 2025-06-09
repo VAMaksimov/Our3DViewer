@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QTextEdit>
 #include <QVBoxLayout>
@@ -48,10 +49,9 @@ class ViewerWidget : public QWidget {
    * Also establishes signal-slot connection for the "open file" button click
    * event
    */
-  void InitializeUI();
-  void CreateLayouts();
+  void InitializeWidgets();
+  void DefineLayouts();
   void ShowError();
-  void UpdateLogViewer();
 
   QPushButton* open_file_button;
   QLabel* object_info_label;

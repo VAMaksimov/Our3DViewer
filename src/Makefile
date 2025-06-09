@@ -178,15 +178,15 @@ clean: clean_dist clean_dvi
 
 # >> TESTS SECTION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ## RUN TESTS
-# filter-out $(OBJECTS_DIR)/brick_game.o, $(BACKEND_OBJECTS) utility 
-# adds $(BACKEND_OBJECTS) w/o brick_game.o file with main()
-test: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
-	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(BACKEND_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
+# filter-out $(OBJECTS_DIR)/brick_game.o, $(MODEL_OBJECTS) utility 
+# adds $(MODEL_OBJECTS) w/o brick_game.o file with main()
+test: build_dir $(TESTS_OBJECTS) $(MODEL_OBJECTS)
+	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(MODEL_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
 	./$(BUILD_DIR)/test
 
 ## RUN TESTS WITH VALGRIND
-valgrind: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
-	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(BACKEND_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
+valgrind: build_dir $(TESTS_OBJECTS) $(MODEL_OBJECTS)
+	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(MODEL_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
 	$(VALGRIND) ./$(BUILD_DIR)/test
 	cat $(VALG_FILE) 2>&1 | grep lost
 
@@ -194,14 +194,14 @@ valgrind: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
 # specific variable for gcov report target
 test_cov: FLAGS:=$(FLAGS) $(COV_FLAGS)
 
-test_cov: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
-	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(BACKEND_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test_cov 
+test_cov: build_dir $(TESTS_OBJECTS) $(MODEL_OBJECTS)
+	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(MODEL_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test_cov 
 	@./$(BUILD_DIR)/test_cov
 
 gcov_report: clean test_cov
 	@echo "$(GREEN)Generating LCOV coverage report...$(RESET_COLOR)"
 	@lcov --capture --directory $(OBJECTS_DIR) --output-file $(BUILD_DIR)/coverage.info
-	lcov --remove $(BUILD_DIR)/coverage.info "/usr/*" "*/tetris" -o $(BUILD_DIR)/coverage.info
+	lcov --remove $(BUILD_DIR)/coverage.info "/usr/*" -o $(BUILD_DIR)/coverage.info
 	@echo "$(GREEN)Generating HTML coverage report...$(RESET_COLOR)"
 	@genhtml $(BUILD_DIR)/coverage.info --output-directory $(COV_DIR)
 	@echo "$(GREEN)Coverage report generated in $(COV_DIR)/index.html$(RESET_COLOR)"
@@ -221,10 +221,10 @@ build_dir:
 	@mkdir -p $(COV_DIR)
 
 style_check:
-	clang-format -style=$(STYLE) -n $(MODULES_SOURCES) $(MODULES_HEADERS)
+	clang-format -style=$(STYLE) -n $(MODULES_SOURCES) $(MODULES_HEADERS) $(TESTS_SOURCES) $(TESTS_HEADERS)
 
 style_format:
-	clang-format -style=$(STYLE) -i $(MODULES_SOURCES) $(MODULES_HEADERS) $(INCLUDE_HEADERS)
+	clang-format -style=$(STYLE) -i $(MODULES_SOURCES) $(MODULES_HEADERS) $(TESTS_SOURCES) $(TESTS_HEADERS)
 
 install_libs:
 	sudo apt-get install $(LIBS)

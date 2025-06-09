@@ -46,16 +46,15 @@ ErrorCode WireframeObject::AllocateMemory(std::ifstream &file) {
 
     auto it = inspect_types.find(prefix);
     if (it != inspect_types.end() && !(this->*(it->second))(iss)) {
-      QString log_message = QString("Invalid format in line: %1")
-                                .arg(QString::fromStdString(line));
-      LogError("AllocateMemory", log_message);
+      LogError("AllocateMemory", "Invalid format in line: " + line);
       result_code = invalid_format;
       break;
     }
   }
 
-  if (!ValidateCounters()) {
+  if (result_code == success_code && !ValidateCounters()) {
     result_code = invalid_format;
+    LogError("AllocateMemory", invalid_format);
   }
 
   if (result_code == success_code) {

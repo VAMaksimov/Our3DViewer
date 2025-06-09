@@ -1,13 +1,15 @@
 #ifndef MODEL_ERRORS_H
 #define MODEL_ERRORS_H
 
-#include <QDateTime>
-#include <QDebug>
-#include <QFile>
-#include <QMessageBox>
-#include <QString>
+#include <chrono>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 namespace s21 {
+
 typedef enum {
   success_code = 0,
   file_not_found,
@@ -16,28 +18,15 @@ typedef enum {
   unknown_error
 } ErrorCode;
 
-/**
- * @brief Logs error messages to a file and outputs them to the console
- * @param component The component where the error occurred
- * @param message The error message to log
- *
- * @note `static` ensures that this function is only visible within this header.
- * It prevents multiple definitions if this header is included in multiple
- * translation units.
- */
-void LogError(const QString& component, const QString& message);
+void LogError(const std::string& component, const std::string& message);
+void LogError(const std::string& component, const ErrorCode status);
+std::string GetStatusMessage(ErrorCode status);
 
-void LogError(const QString& component, const ErrorCode status);
+std::string GetCurrentTimestamp();
 
-static QString FormatErrorMessage(const QString& component,
-                                  const QString& message) {
-  return QString("[%1] %2: %3\n")
-      .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-      .arg(component)
-      .arg(message);
-}
+std::string FormatErrorMessage(const std::string& component,
+                                      const std::string& message);
 
-QString GetStatusMessage(ErrorCode status);
 }  // namespace s21
 
 #endif  // MODEL_ERRORS_H

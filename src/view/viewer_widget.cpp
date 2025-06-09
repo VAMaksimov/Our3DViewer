@@ -3,13 +3,13 @@
 namespace s21 {
 
 ViewerWidget::ViewerWidget(QWidget* parent) : QWidget(parent) {
-  InitializeUI();
-  CreateLayouts();
+  InitializeWidgets();
+  DefineLayouts();
 }
 
 ViewerWidget::~ViewerWidget() {}
 
-void ViewerWidget::InitializeUI() {
+void ViewerWidget::InitializeWidgets() {
   open_file_button = new QPushButton("Open File", this);
   object_info_label = new QLabel("No object loaded", this);
   left_panel = new QWidget(this);
@@ -20,7 +20,7 @@ void ViewerWidget::InitializeUI() {
           &ViewerWidget::OpenFile);
 }
 
-void ViewerWidget::CreateLayouts() {
+void ViewerWidget::DefineLayouts() {
   // Left panel layout
   QVBoxLayout* left_layout = new QVBoxLayout(left_panel);
   left_layout->addWidget(open_file_button);
@@ -46,6 +46,8 @@ void ViewerWidget::ShowError() {
   QFile file("logs/debug.log");
   if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     QTextStream in(&file);
+    log_viewer->setText(in.readAll());
+    in.seek(0);  // Reset the stream to read from the beginning
     while (!in.atEnd()) {
       error_message = in.readLine();
     }
@@ -56,32 +58,15 @@ void ViewerWidget::ShowError() {
   }
 }
 
-void ViewerWidget::OpenFile() {
-  QString file_path = QFileDialog::getOpenFileName(this, "Open Object File", "",
-                                                   "Object Files (*.obj)");
-  current_object = std::make_unique<WireframeObject>(file_path.toStdString());
-  UpdateObjectInfo();
-}
-
 void ViewerWidget::UpdateObjectInfo() {
   if (current_object->GetId() >= 0) {
-    QString info = QString("Object Name: %1\nObject ID: %2")
+    QString info = QString("Object Name: %1\nObject ID: %2\nNo of faces: %3")
                        .arg(QString::fromStdString(current_object->GetName()))
-                       .arg(current_object->GetId());
+                       .arg(current_object->GetId())
+                       .arg(current_object->GetFaces().size());
     object_info_label->setText(info);
   } else {
     ShowError();
-    UpdateLogViewer();
   }
 }
-
-void ViewerWidget::UpdateLogViewer() {
-  QFile file("logs/debug.log");
-  if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    QTextStream in(&file);
-    log_viewer->setText(in.readAll());
-    file.close();
-  }
-}
-
 }  // namespace s21
