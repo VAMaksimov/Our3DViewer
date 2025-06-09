@@ -9,13 +9,13 @@
 
 namespace s21 {
 
-enum class ErrorCode {
+typedef enum {
   success_code = 0,
   file_not_found,
   invalid_format,
   memory_error,
   unknown_error
-};
+} ErrorCode;
 
 void LogError(const std::string& component, const std::string& message);
 void LogError(const std::string& component, const ErrorCode status);
@@ -30,7 +30,7 @@ static std::string GetCurrentTimestamp() {
 }
 
 static std::string FormatErrorMessage(const std::string& component,
-                                    const std::string& message) {
+                                      const std::string& message) {
   return "[" + GetCurrentTimestamp() + "] " + component + ": " + message + "\n";
 }
 
