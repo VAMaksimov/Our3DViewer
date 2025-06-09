@@ -54,7 +54,7 @@ ErrorCode WireframeObject::AllocateMemory(std::ifstream &file) {
     }
   }
 
-  if (result_code = success_code && !ValidateCounters()) {
+  if (result_code == success_code && !ValidateCounters()) {
     result_code = invalid_format;
     LogError("AllocateMemory", invalid_format);
   }

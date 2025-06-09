@@ -1,43 +1,39 @@
 #ifndef MODEL_ERRORS_H
 #define MODEL_ERRORS_H
 
-#include <QDateTime>
-#include <QDebug>
-#include <QFile>
-#include <QMessageBox>
-#include <QString>
+#include <chrono>
+#include <fstream>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 namespace s21 {
-typedef enum {
+
+enum class ErrorCode {
   success_code = 0,
   file_not_found,
   invalid_format,
   memory_error,
   unknown_error
-} ErrorCode;
+};
 
-/**
- * @brief Logs error messages to a file and outputs them to the console
- * @param component The component where the error occurred
- * @param message The error message to log
- *
- * @note `static` ensures that this function is only visible within this header.
- * It prevents multiple definitions if this header is included in multiple
- * translation units.
- */
-void LogError(const QString& component, const QString& message);
+void LogError(const std::string& component, const std::string& message);
+void LogError(const std::string& component, const ErrorCode status);
+std::string GetStatusMessage(ErrorCode status);
 
-void LogError(const QString& component, const ErrorCode status);
-
-static QString FormatErrorMessage(const QString& component,
-                                  const QString& message) {
-  return QString("[%1] %2: %3\n")
-      .arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-      .arg(component)
-      .arg(message);
+static std::string GetCurrentTimestamp() {
+  auto now = std::chrono::system_clock::now();
+  auto time = std::chrono::system_clock::to_time_t(now);
+  std::stringstream ss;
+  ss << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S");
+  return ss.str();
 }
 
-QString GetStatusMessage(ErrorCode status);
+static std::string FormatErrorMessage(const std::string& component,
+                                    const std::string& message) {
+  return "[" + GetCurrentTimestamp() + "] " + component + ": " + message + "\n";
+}
+
 }  // namespace s21
 
 #endif  // MODEL_ERRORS_H
