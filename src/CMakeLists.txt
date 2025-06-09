@@ -34,14 +34,14 @@ file(GLOB MODEL_HEADERS
     model/*.h
 )
 
-Create a static library for the core model logic
+# Create a static library for the core model logic
 add_library(viewer_model STATIC
     ${MODEL_SOURCES}
     ${MODEL_HEADERS}
 )
 
-Ensure the library itself knows where its headers are (relative to include/)
-PUBLIC means consumers of this library also get this include path
+# Ensure the library itself knows where its headers are (relative to include/)
+# PUBLIC means consumers of this library also get this include path
 target_include_directories(viewer_model PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/model
 )
