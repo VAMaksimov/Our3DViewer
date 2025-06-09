@@ -178,15 +178,15 @@ clean: clean_dist clean_dvi
 
 # >> TESTS SECTION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ## RUN TESTS
-# filter-out $(OBJECTS_DIR)/brick_game.o, $(BACKEND_OBJECTS) utility 
-# adds $(BACKEND_OBJECTS) w/o brick_game.o file with main()
-test: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
-	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(BACKEND_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
+# filter-out $(OBJECTS_DIR)/brick_game.o, $(MODEL_OBJECTS) utility 
+# adds $(MODEL_OBJECTS) w/o brick_game.o file with main()
+test: build_dir $(TESTS_OBJECTS) $(MODEL_OBJECTS)
+	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(MODEL_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
 	./$(BUILD_DIR)/test
 
 ## RUN TESTS WITH VALGRIND
-valgrind: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
-	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(BACKEND_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
+valgrind: build_dir $(TESTS_OBJECTS) $(MODEL_OBJECTS)
+	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(MODEL_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test
 	$(VALGRIND) ./$(BUILD_DIR)/test
 	cat $(VALG_FILE) 2>&1 | grep lost
 
@@ -194,8 +194,8 @@ valgrind: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
 # specific variable for gcov report target
 test_cov: FLAGS:=$(FLAGS) $(COV_FLAGS)
 
-test_cov: build_dir $(TESTS_OBJECTS) $(BACKEND_OBJECTS)
-	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(BACKEND_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test_cov 
+test_cov: build_dir $(TESTS_OBJECTS) $(MODEL_OBJECTS)
+	$(CC) $(FLAGS) $(TESTS_OBJECTS) $(MODEL_OBJECTS) $(TEST_FLAGS) -o $(BUILD_DIR)/test_cov 
 	@./$(BUILD_DIR)/test_cov
 
 gcov_report: clean test_cov
