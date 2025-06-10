@@ -15,6 +15,7 @@
 #include <memory>
 
 #include "model/parser.h"
+#include "view/scene.h"
 
 namespace s21 {
 /**
