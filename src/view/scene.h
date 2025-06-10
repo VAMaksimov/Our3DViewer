@@ -1,33 +1,3 @@
-// #ifndef VIEW_VIEWER_WIDGET_H_
-// #define VIEW_VIEWER_WIDGET_H_
-
-// #include <QWidget>
-// #include <memory>
-
-// namespace s21 {
-
-// class Scene : public QWidget {
-//     Q_OBJECT
-
-// public:
-//     Scene(QWidget* parent = nullptr, WireframeObject aobject) : model_(aobject);
-//     ~Scene() override;
-
-// protected:
-//     void initializeGL() override;
-//     void paintGL() override;
-//     // void resizeGL(int w, int h) override;
-
-// protected:
-//     // std::unique_ptr<Facade> renderer_;
-//     WireframeObject model_;
-// };
-
-// } // namespace s21
-
-// #endif  // VIEW_VIEWER_WIDGET_H_
-
-// view/scene.h
 #ifndef VIEW_SCENE_H_
 #define VIEW_SCENE_H_
 
