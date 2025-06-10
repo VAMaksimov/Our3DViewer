@@ -3,6 +3,7 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLBuffer>
+#include <QWheelEvent>
 #include <QVector3D>
 
 #include "model/parser.h" // WireframeObject
@@ -15,54 +16,24 @@ class Scene : public QOpenGLWidget {
 public:
     Scene(QWidget* parent = nullptr);
     ~Scene() override;
+    void SetModel(const WireframeObject& model) {
+        model_ = std::make_shared<WireframeObject>(model);
+        vbo_.bind();
+        vbo_.allocate(model_->vertices.data(),
+                      model_->vertices.size() * sizeof(QVector3D));
+        vbo_.release();
+    }
+
 
 protected:
     void initializeGL() override;
     void paintGL() override;
-    void SetModel(const WireframeObject& model) {
-        model_ = std::make_shared<WireframeObject>(model);
-        vbo_.bind();
-        vbo_.allocate(model_->vertices.data(), 
-                     model_->vertices.size() * sizeof(QVector3D));
-        vbo_.release();
-    }
+    void resizeGL(int w, int h) override;
 
 protected:
     QOpenGLBuffer vbo_;
     std::shared_ptr<WireframeObject> model_;
 };
-
-Scene::Scene(QWidget* parent) : QOpenGLWidget(parent), vbo_(QOpenGLBuffer::VertexBuffer) {
-    model_ = std::make_shared<WireframeObject>("");
-}
-
-Scene::~Scene() {
-    vbo_.destroy();
-}
-
-void Scene::initializeGL() {
-    vbo_.create();
-    vbo_.bind();
-    if (model_) {
-        vbo_.allocate(model_->vertices.data(), 
-                     model_->vertices.size() * sizeof(QVector3D));
-    }
-    vbo_.release();
-}
-
-void Scene::paintGL() {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
-
-    if (model_) {
-        vbo_.bind();
-        glVertexPointer(3, GL_FLOAT, 0, nullptr);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glDrawArrays(GL_POINTS, 0, model_->vertices.size());
-        glDisableClientState(GL_VERTEX_ARRAY);
-        vbo_.release();
-    }
-}
 
 } // namespace s21
 

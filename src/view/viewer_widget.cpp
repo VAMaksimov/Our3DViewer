@@ -17,6 +17,7 @@ void ViewerWidget::InitializeWidgets() {
   main_panel = new QWidget(this);
   log_viewer = new QTextEdit(this);
   main_viewer = new Scene(this);
+  main_viewer->SetModel(*current_object);
 
   connect(open_file_button, &QPushButton::clicked, this, &ViewerWidget::OpenFile);
 }
