@@ -31,7 +31,7 @@
 #ifndef VIEW_SCENE_H_
 #define VIEW_SCENE_H_
 
-#include <QtOpenGLWidgets/QOpenGLWidget>
+#include <QOpenGLWidget>
 #include <QOpenGLBuffer>
 #include <QVector3D>
 
@@ -43,31 +43,56 @@ class Scene : public QOpenGLWidget {
     Q_OBJECT
 
 public:
-    Scene(const std::unique_ptr<WireframeObject> model = nullptr, QWidget* parent = nullptr);
+    Scene(QWidget* parent = nullptr);
     ~Scene() override;
-
-    void SetModel(const WireframeObject& model);
 
 protected:
     void initializeGL() override;
     void paintGL() override;
-    void resizeGL(int w, int h) override;
+    void SetModel(const WireframeObject& model) {
+        model_ = std::make_shared<WireframeObject>(model);
+        vbo_.bind();
+        vbo_.allocate(model_->vertices.data(), 
+                     model_->vertices.size() * sizeof(QVector3D));
+        vbo_.release();
+    }
 
-    // Mouse events for rotation and zoom
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void wheelEvent(QWheelEvent* event) override;
-
-private:
-    // QOpenGLShaderProgram program_;
+protected:
     QOpenGLBuffer vbo_;
-
-    std::unique_ptr<WireframeObject> model_;
-    QVector3D rotation_{0.0f, 0.0f, 0.0f};
-    float scale_{1.0f};
-
-    QPoint last_pos_;
+    std::shared_ptr<WireframeObject> model_;
 };
+
+Scene::Scene(QWidget* parent) : QOpenGLWidget(parent), vbo_(QOpenGLBuffer::VertexBuffer) {
+    model_ = std::make_shared<WireframeObject>("");
+}
+
+Scene::~Scene() {
+    vbo_.destroy();
+}
+
+void Scene::initializeGL() {
+    vbo_.create();
+    vbo_.bind();
+    if (model_) {
+        vbo_.allocate(model_->vertices.data(), 
+                     model_->vertices.size() * sizeof(QVector3D));
+    }
+    vbo_.release();
+}
+
+void Scene::paintGL() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
+
+    if (model_) {
+        vbo_.bind();
+        glVertexPointer(3, GL_FLOAT, 0, nullptr);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glDrawArrays(GL_POINTS, 0, model_->vertices.size());
+        glDisableClientState(GL_VERTEX_ARRAY);
+        vbo_.release();
+    }
+}
 
 } // namespace s21
 

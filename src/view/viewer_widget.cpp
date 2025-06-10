@@ -16,7 +16,7 @@ void ViewerWidget::InitializeWidgets() {
   left_panel = new QWidget(this);
   main_panel = new QWidget(this);
   log_viewer = new QTextEdit(this);
-  main_viewer = new Scene::Scene(this);
+  main_viewer = new Scene(this);
 
   connect(open_file_button, &QPushButton::clicked, this, &ViewerWidget::OpenFile);
 }
@@ -68,6 +68,8 @@ void ViewerWidget::UpdateObjectInfo() {
                        .arg(current_object->GetId())
                        .arg(current_object->GetFaces().size());
     object_info_label->setText(info);
+    main_viewer->SetModel(*current_object);
+    main_viewer->update();  // Refresh the viewer to display the new model
   } else {
     ShowError();
   }
