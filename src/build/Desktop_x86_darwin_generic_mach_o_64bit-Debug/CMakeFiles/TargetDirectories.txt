@@ -1,6 +1,0 @@
-/Users/sueannel/Projects/Our3DViewer/src/build/Desktop_x86_darwin_generic_mach_o_64bit-Debug/CMakeFiles/viewer_model.dir
-/Users/sueannel/Projects/Our3DViewer/src/build/Desktop_x86_darwin_generic_mach_o_64bit-Debug/CMakeFiles/3d_viewer_gui.dir
-/Users/sueannel/Projects/Our3DViewer/src/build/Desktop_x86_darwin_generic_mach_o_64bit-Debug/CMakeFiles/edit_cache.dir
-/Users/sueannel/Projects/Our3DViewer/src/build/Desktop_x86_darwin_generic_mach_o_64bit-Debug/CMakeFiles/rebuild_cache.dir
-/Users/sueannel/Projects/Our3DViewer/src/build/Desktop_x86_darwin_generic_mach_o_64bit-Debug/CMakeFiles/viewer_model_autogen.dir
-/Users/sueannel/Projects/Our3DViewer/src/build/Desktop_x86_darwin_generic_mach_o_64bit-Debug/CMakeFiles/3d_viewer_gui_autogen.dir

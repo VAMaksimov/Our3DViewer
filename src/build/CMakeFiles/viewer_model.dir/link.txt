@@ -1,2 +1,0 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libviewer_model.a CMakeFiles/viewer_model.dir/viewer_model_autogen/mocs_compilation.cpp.o CMakeFiles/viewer_model.dir/model/errors.cpp.o CMakeFiles/viewer_model.dir/model/parser.cpp.o
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libviewer_model.a
