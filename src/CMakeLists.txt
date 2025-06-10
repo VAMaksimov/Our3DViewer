@@ -15,7 +15,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include_directories(${CMAKE_SOURCE_DIR})
 
 # Find Qt6 for the GUI target
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets OpenGLWidgets)
 
 # Enable Qt's automatic tools (Meta-Object Compiler, UI Compiler, Resource Compiler)
 set(CMAKE_AUTOMOC ON)
@@ -86,6 +86,7 @@ target_link_libraries(3d_viewer_gui PRIVATE
     Qt6::Core
     Qt6::Gui
     Qt6::Widgets
+    Qt6::OpenGLWidgets
 )
 
 # --- Output ---

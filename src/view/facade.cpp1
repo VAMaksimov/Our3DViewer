@@ -1,0 +1,40 @@
+#include "facade.h"
+#include "FileReader.h"
+#include "QtSceneDrawer.h"
+#include "Scene.h"
+#include "TransformMatrixBuilder.h"
+
+Facade::Facade()
+    : fileReader(std::make_unique<FileReader>()),
+    sceneDrawer(std::make_unique<QtSceneDrawer>()) {}
+
+Facade::~Facade() = default;
+
+FacadeOperationResult Facade::LoadScene(const std::string& path) {
+    try {
+        NormalizationParameters params{};
+        scene = fileReader->ReadScene(path, params);
+        return {"", true};
+    } catch (...) {
+        return {"Ошибка при загрузке файла", false};
+    }
+}
+
+FacadeOperationResult Facade::DrawScene() {
+    if (!scene) {
+        return {"Сцена не загружена", false};
+    }
+    sceneDrawer->DrawScene(*scene);
+    return {"", true};
+}
+
+FacadeOperationResult Facade::ScaleScene(double x, double y, double z) {
+    if (!scene) {
+        return {"Сцена не загружена", false};
+    }
+    auto matrix = TransformMatrixBuilder::CreateScaleMatrix(x, y, z);
+    for (auto& fig : scene->GetFigures()) {
+        fig->Transform(matrix);
+    }
+    return {"", true};
+}

@@ -1,0 +1,6 @@
+/Users/sueannel/Projects/Our3DViewer/src/build/CMakeFiles/viewer_model.dir
+/Users/sueannel/Projects/Our3DViewer/src/build/CMakeFiles/3d_viewer_gui.dir
+/Users/sueannel/Projects/Our3DViewer/src/build/CMakeFiles/edit_cache.dir
+/Users/sueannel/Projects/Our3DViewer/src/build/CMakeFiles/rebuild_cache.dir
+/Users/sueannel/Projects/Our3DViewer/src/build/CMakeFiles/viewer_model_autogen.dir
+/Users/sueannel/Projects/Our3DViewer/src/build/CMakeFiles/3d_viewer_gui_autogen.dir

@@ -1,4 +1,5 @@
 #include "view/viewer_widget.h"
+#include "view/scene.h"
 
 namespace s21 {
 
@@ -15,22 +16,24 @@ void ViewerWidget::InitializeWidgets() {
   left_panel = new QWidget(this);
   main_panel = new QWidget(this);
   log_viewer = new QTextEdit(this);
+  main_viewer = new Scene::Scene(this);
 
-  connect(open_file_button, &QPushButton::clicked, this,
-          &ViewerWidget::OpenFile);
+  connect(open_file_button, &QPushButton::clicked, this, &ViewerWidget::OpenFile);
 }
 
 void ViewerWidget::DefineLayouts() {
   // Left panel layout
   QVBoxLayout* left_layout = new QVBoxLayout(left_panel);
   left_layout->addWidget(open_file_button);
+  left_layout->addWidget(object_info_label);
   left_layout->addStretch();
   left_panel->setFixedWidth(200);
 
   // Main panel layout
   QVBoxLayout* main_layout = new QVBoxLayout(main_panel);
-  main_layout->addWidget(object_info_label);
-  main_layout->addStretch();
+  main_viewer->setFixedHeight(1000);
+  main_viewer->setFixedWidth(1000);
+  main_layout->addWidget(main_viewer);
   log_viewer->setReadOnly(true);
   log_viewer->setFixedHeight(150);
   main_layout->addWidget(log_viewer);
@@ -69,4 +72,6 @@ void ViewerWidget::UpdateObjectInfo() {
     ShowError();
   }
 }
+
+
 }  // namespace s21
