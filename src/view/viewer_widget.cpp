@@ -57,6 +57,7 @@ void ViewerWidget::ShowError() {
     std::ofstream log_file("logs/debug.log", std::ios::out);
     log_file.close();
   } else {
+    std::string error_message;
     GetLastLine(file, error_message);
     file.close();
     if (!error_message.isEmpty()) {
@@ -82,7 +83,6 @@ void ViewerWidget::UpdateObjectInfo() {
 
 // helper funcs
 void GetLastLine(const std::ifstream& file, std::string& error_message) {
-  std::string error_message;
   std::string line;
   while (std::getline(file, line)) {
     error_message = line;
