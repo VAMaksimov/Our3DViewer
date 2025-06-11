@@ -17,7 +17,6 @@ void ViewerWidget::InitializeWidgets() {
   main_panel = new QWidget(this);
   log_viewer = new QTextEdit(this);
   main_viewer = new Scene(this);
-  main_viewer->SetModel(*current_object);
 
   connect(open_file_button, &QPushButton::clicked, this, &ViewerWidget::OpenFile);
 }
@@ -46,9 +45,11 @@ void ViewerWidget::DefineLayouts() {
 }
 
 void ViewerWidget::ShowError() {
+    s21::LogError("ShowError", "inside");
   QString error_message;
   QFile file("logs/debug.log");
   if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      s21::LogError("ShowError", "file opened");
     QTextStream in(&file);
     log_viewer->setText(in.readAll());
     in.seek(0);  // Reset the stream to read from the beginning
@@ -58,6 +59,7 @@ void ViewerWidget::ShowError() {
     file.close();
   }
   if (!error_message.isEmpty()) {
+      s21::LogError("ShowError", "error message not empty");
     QMessageBox::critical(this, "Error", error_message);
   }
 }

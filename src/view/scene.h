@@ -3,7 +3,6 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLBuffer>
-#include <QWheelEvent>
 #include <QVector3D>
 
 #include "model/parser.h" // WireframeObject
@@ -28,11 +27,10 @@ public:
 protected:
     void initializeGL() override;
     void paintGL() override;
-    void resizeGL(int w, int h) override;
 
 protected:
     QOpenGLBuffer vbo_;
-    std::shared_ptr<WireframeObject> model_;
+    std::shared_ptr<WireframeObject> model_ = nullptr;
 };
 
 } // namespace s21

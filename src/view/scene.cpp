@@ -2,9 +2,7 @@
 #include "view/scene.h"
 
 namespace s21 {
-Scene::Scene(QWidget* parent) : QOpenGLWidget(parent), vbo_(QOpenGLBuffer::VertexBuffer) {
-    model_ = std::make_shared<WireframeObject>("");
-}
+Scene::Scene(QWidget* parent) : QOpenGLWidget(parent), vbo_(QOpenGLBuffer::VertexBuffer) {}
 
 Scene::~Scene() {
     vbo_.destroy();
@@ -32,10 +30,5 @@ void Scene::paintGL() {
         glDisableClientState(GL_VERTEX_ARRAY);
         vbo_.release();
     }
-}
-
-void Scene::resizeGL(int w, int h) {
-    if (h == 0) h = 1;
-    glViewport(0, 0, w, h);
 }
 }
