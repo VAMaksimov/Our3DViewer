@@ -25,7 +25,7 @@ std::string GetStatusMessage(ErrorCode status);
 std::string GetCurrentTimestamp();
 
 std::string FormatErrorMessage(const std::string& component,
-                                      const std::string& message);
+                               const std::string& message);
 
 }  // namespace s21
 

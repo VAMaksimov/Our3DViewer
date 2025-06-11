@@ -106,11 +106,7 @@ uninstall:
 		echo "$(YELLOW)No files found in:$(RESET_COLOR) $(BLUE)$(BUILD_DIR)$(RESET_COLOR)"; \
 	fi
 
-	rm $(LOG_DIR)/tetris_high_score.txt
-
 ## RUN PROGRAM
-
-
 gui:
 	./$(BUILD_DIR)/$(LIBNAME)_gui
 
