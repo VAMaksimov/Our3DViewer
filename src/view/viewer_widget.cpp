@@ -60,8 +60,8 @@ void ViewerWidget::ShowError() {
     std::string error_message;
     GetLastLine(file, error_message);
     file.close();
-    if (!error_message.isEmpty()) {
-      QMessageBox::critical(this, "Error", error_message);
+    if (!error_message.empty()) {
+      QMessageBox::critical(this, "Error", QString::fromStdString(error_message));
       log_viewer->append(QString::fromStdString(error_message));
     }
   }
@@ -82,7 +82,7 @@ void ViewerWidget::UpdateObjectInfo() {
 }
 
 // helper funcs
-void GetLastLine(const std::ifstream& file, std::string& error_message) {
+void GetLastLine(std::ifstream& file, std::string& error_message) {
   std::string line;
   while (std::getline(file, line)) {
     error_message = line;
