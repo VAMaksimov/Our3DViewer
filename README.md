@@ -22,16 +22,16 @@ Implementation of 3DViewer v2.0
 > Description: Create the new folder structure (model/, view/, controller/, patterns/facade/, patterns/strategy/) and update CMakeLists.txt or .pro to include them. Remove/disable old Tetris build targets.
 
 **Issue**: “Scaffold MVC Classes”
-> Description: Add empty stubs for WireframeModel (in model/), WireframeView (in view/, subclassing QOpenGLWidget) and WireframeController (in controller/, subclassing QObject). Wire them together in main() so the app launches without errors.
+> Description: Add empty stubs for WireframeObject (in model/), WireframeView (in view/, subclassing QOpenGLWidget) and WireframeController (in controller/, subclassing QObject). Wire them together in main() so the app launches without errors.
 
-**Issue**: “Implement WireframeModel”
-> Description: In model/, flesh out WireframeModel with data structures for vertices and edges, methods loadFromFile(path) (stub), applyTransform(matrix), and getters.
+**Issue**: “Implement WireframeObject”
+> Description: In model/, flesh out WireframeObject with data structures for vertices and edges, methods loadFromFile(path) (stub), applyTransform(matrix), and getters.
 
 **Issue**: “Implement WireframeView & OpenGL Hooks”
 > Description: In view/, implement WireframeView::initializeGL(), paintGL(), resizeGL() to call into RendererFacade. Hold pointers to the model and current projection strategy.
 
 **Issue**: “Implement WireframeController”
-> Description: In controller/, add slots for keyboard/mouse input (rotate X/Y/Z, pan, zoom). On input, compute a new transform matrix and push it to WireframeModel, then call view->update().
+> Description: In controller/, add slots for keyboard/mouse input (rotate X/Y/Z, pan, zoom). On input, compute a new transform matrix and push it to WireframeObject, then call view->update().
 
 **Issue**: “Add RendererFacade Interface”
 > Description: In patterns/facade/, define a RendererFacade class that exposes init(), clear(), setProjection(matrix), drawLine(v1, v2, color). No OpenGL calls outside this facade.
@@ -52,10 +52,10 @@ Implementation of 3DViewer v2.0
 > Description: Add keyboard or menu commands (e.g. “P”) in WireframeController/View to swap between Orthographic and Perspective strategies at runtime, updating the facade’s projection.
 
 **Issue**: “Hard-coded Cube Validation”
-> Description: Populate WireframeModel with a simple cube’s vertices/edges in code. Verify rotation, zoom, pan and both projections work end-to-end before loading external files.
+> Description: Populate WireframeObject with a simple cube’s vertices/edges in code. Verify rotation, zoom, pan and both projections work end-to-end before loading external files.
 
 **Issue**: “OBJ File Loader in Model”
-> Description: Extend WireframeModel::loadFromFile() to parse a basic .OBJ (or custom) format. Add unit tests for loader.
+> Description: Extend WireframeObject::loadFromFile() to parse a basic .OBJ (or custom) format. Add unit tests for loader.
 
 **Issue**: “Clean-up & Tetris Removal”
 > Description: Once the 3D viewer is fully functional, remove all remaining TetrisWidget, tetris_model, interface.h, common.cpp/h references, and delete old code.

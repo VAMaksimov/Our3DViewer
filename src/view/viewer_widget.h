@@ -12,7 +12,9 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <fstream>
 #include <memory>
+#include <string>
 
 #include "model/parser.h"
 #include "view/scene.h"
@@ -52,6 +54,8 @@ class ViewerWidget : public QWidget {
    */
   void InitializeWidgets();
   void DefineLayouts();
+  void SetLeftPanel();
+  void SetMainPanel();
   void ShowError();
 
   QPushButton* open_file_button;
@@ -60,8 +64,11 @@ class ViewerWidget : public QWidget {
   QWidget* main_panel;
   QTextEdit* log_viewer;
   Scene* main_viewer;
-  std::unique_ptr<WireframeObject> current_object;
+  std::shared_ptr<WireframeObject> current_object = nullptr;
 };
+
+// helper funcs
+void GetLastLine(const std::ifstream& file, std::string& error_message);
 
 }  // namespace s21
 

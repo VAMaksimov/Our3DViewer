@@ -67,8 +67,8 @@ class WireframeObject {
   void AssignName(const std::string file_path) noexcept;
 
  public:
- std::vector<Coordinate> vertices;
- std::vector<Face> faces;
+  std::vector<Coordinate> vertices;
+  std::vector<Face> faces;
 
  protected:
   static int next_id;

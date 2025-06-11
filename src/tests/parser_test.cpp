@@ -4,9 +4,7 @@
 
 class ParserTest : public ::testing::Test {
  protected:
-  void SetUp() override {
-    ClearLogFile();
-  }
+  void SetUp() override { ClearLogFile(); }
 
   void TearDown() override {}
 
