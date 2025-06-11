@@ -68,7 +68,7 @@ class ViewerWidget : public QWidget {
 };
 
 // helper funcs
-void GetLastLine(const std::ifstream& file, std::string& error_message);
+void GetLastLine(std::ifstream& file, std::string& error_message);
 
 }  // namespace s21
 
