@@ -15,6 +15,7 @@
 #include <memory>
 
 #include "model/parser.h"
+#include "view/scene.h"
 
 namespace s21 {
 /**
@@ -58,6 +59,7 @@ class ViewerWidget : public QWidget {
   QWidget* left_panel;
   QWidget* main_panel;
   QTextEdit* log_viewer;
+  Scene* main_viewer;
   std::unique_ptr<WireframeObject> current_object;
 };
 

@@ -66,14 +66,16 @@ class WireframeObject {
   void GetValues(std::ifstream &file) noexcept;
   void AssignName(const std::string file_path) noexcept;
 
+ public:
+ std::vector<Coordinate> vertices;
+ std::vector<Face> faces;
+
  protected:
   static int next_id;
   int id = -1;
   std::string name;
-  std::vector<Coordinate> vertices;
   std::vector<TextureCoordinate> textures;
   std::vector<Coordinate> normals;
-  std::vector<Face> faces;
   Counter count;
 
  protected:
