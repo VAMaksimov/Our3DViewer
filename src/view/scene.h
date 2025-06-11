@@ -4,7 +4,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLBuffer>
 #include <QVector3D>
-
+#include <QWheelEvent>
 #include "model/parser.h" // WireframeObject
 
 namespace s21 {
@@ -22,6 +22,7 @@ public:
                       model_->vertices.size() * sizeof(QVector3D));
         vbo_.release();
     }
+   void wheelEvent(QWheelEvent *event) override;
 
 
 protected:
@@ -31,6 +32,9 @@ protected:
 protected:
     QOpenGLBuffer vbo_;
     std::shared_ptr<WireframeObject> model_ = nullptr;
+
+private:
+    float scale_factor_ = 1.0f;  // Начальный масштаб
 };
 
 } // namespace s21
