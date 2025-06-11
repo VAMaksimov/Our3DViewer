@@ -23,7 +23,7 @@ const int MAX_FACES = 100000;
 // STRUCTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 namespace s21 {
 class WireframeObject {
- protected:
+ public:
   struct Coordinate {
     float x{0.0f}, y{0.0f}, z{0.0f};
     bool IsValid() const {
@@ -40,7 +40,7 @@ class WireframeObject {
   struct Face {
     Coordinate position[3];
     TextureCoordinate texture[3];
-    Coordinate normal;
+    Coordinate normal[3];
   };
   struct Counter {
     int v = 0, vt = 0, vn = 0, f = 0;
@@ -69,13 +69,14 @@ class WireframeObject {
  public:
  std::vector<Coordinate> vertices;
  std::vector<Face> faces;
+   std::vector<Coordinate> normals;
 
  protected:
   static int next_id;
   int id = -1;
   std::string name;
   std::vector<TextureCoordinate> textures;
-  std::vector<Coordinate> normals;
+
   Counter count;
 
  protected:

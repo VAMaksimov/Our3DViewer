@@ -1,0 +1,35 @@
+#include <QOpenGLFunctions>
+
+class MyGLWindow : public QWindow, protected QOpenGLFunctions
+{
+    Q_OBJECT
+public:
+    explicit MyGLWindow(QScreen *screen = nullptr);
+
+protected:
+    void initializeGL();
+    void paintGL();
+
+    QOpenGLContext *m_context;
+};
+
+MyGLWindow::MyGLWindow(QScreen *screen)
+    : QWindow(screen)
+{
+    setSurfaceType(OpenGLSurface);
+    create();
+
+    // Create an OpenGL context
+    m_context = new QOpenGLContext;
+    m_context->create();
+
+    // Setup scene and render it
+    initializeGL();
+    paintGL();
+};
+
+void MyGLWindow::initializeGL()
+{
+    m_context->makeCurrent(this);
+    initializeOpenGLFunctions();
+}

@@ -174,8 +174,12 @@ void WireframeObject::ParseFace(std::istringstream &iss) {
     iss >> v >> slash >> vt >> slash >> vn;
     face.position[i] = vertices[v - 1];
     face.texture[i] = textures[vt - 1];
+    face.normal[i] = normals[vn - 1];
   }
-  face.normal = normals[vn - 1];
+
   faces.push_back(face);
 }
+
+
+
 }  // namespace s21
