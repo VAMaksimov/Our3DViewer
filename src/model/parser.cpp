@@ -172,8 +172,8 @@ void WireframeObject::ParseFace(std::istringstream &iss) {
   int v, vt, vn;
   for (int i = 0; i < 3; i++) {
     iss >> v >> slash >> vt >> slash >> vn;
-    face.position[i] = vertices[v - 1];
-    face.texture[i] = textures[vt - 1];
+    face.position[i] = &vertices[v - 1];
+    face.texture[i] = &textures[vt - 1];
   }
   face.normal = normals[vn - 1];
   faces.push_back(face);

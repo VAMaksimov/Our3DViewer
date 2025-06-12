@@ -1,0 +1,20 @@
+o Tree_lp_11
+# Coordinates (v) define the position of vertices in 3D space
+# Format: v x y z (x,y,z are floating-point numbers)
+v 0 0 0
+v 10 0 0
+v 0 10 0
+
+# Texture coordinates (vt) map 2D image points to 3D surface
+# Format: vt u v (u,v range from 0 to 1)
+vt 0 0    # (0,0) Maps texture's bottom-left to this vertex
+vt 1 0    # (1,0) Maps texture's bottom-right, defines texture width
+vt 0 1    # (0,1) Maps texture's top-left, defines texture height
+
+# Normal vectors (vn) define the direction a surface faces, crucial for lighting calculations
+# Format: vn x y z (normalized vector components)
+vn 0 1 0  # Y=1 means surface faces upward, essential for correct light reflection
+
+# Face definition connects vertices, textures, and normals
+# Format: f v/vt/vn (vertex/texture/normal indices)
+f 1/1/1 2/2/1 3/3/1  # Creates triangle surface, clockwise order defines front face
