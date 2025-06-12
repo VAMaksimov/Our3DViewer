@@ -68,10 +68,10 @@ class WireframeObject {
 
  public:
   std::vector<Coordinate> vertices;
+  std::vector<Coordinate> normals;
+  std::vector<TextureCoordinate> textures;
   std::vector<Face> faces;
   std::string name;
-  std::vector<TextureCoordinate> textures;
-  std::vector<Coordinate> normals;
 
  protected:
   static int next_id;

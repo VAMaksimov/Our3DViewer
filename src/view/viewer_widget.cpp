@@ -1,4 +1,5 @@
 #include "view/viewer_widget.h"
+
 #include "view/scene.h"
 
 namespace s21 {
@@ -18,18 +19,28 @@ void ViewerWidget::InitializeWidgets() {
   log_viewer = new QTextEdit(this);
   main_viewer = new Scene(this);
 
-  connect(open_file_button, &QPushButton::clicked, this, &ViewerWidget::OpenFile);
+  connect(open_file_button, &QPushButton::clicked, this,
+          &ViewerWidget::OpenFile);
 }
 
 void ViewerWidget::DefineLayouts() {
-  // Left panel layout
+  SetLeftPanel();
+  SetMainPanel();
+  // QHBox - horizontal appends, QVBox - vertical appends
+  QHBoxLayout* main_widget_layout = new QHBoxLayout(this);
+  main_widget_layout->addWidget(left_panel);
+  main_widget_layout->addWidget(main_panel);
+}
+
+void ViewerWidget::SetLeftPanel() {
   QVBoxLayout* left_layout = new QVBoxLayout(left_panel);
   left_layout->addWidget(open_file_button);
   left_layout->addWidget(object_info_label);
   left_layout->addStretch();
   left_panel->setFixedWidth(200);
+}
 
-  // Main panel layout
+void ViewerWidget::SetMainPanel() {
   QVBoxLayout* main_layout = new QVBoxLayout(main_panel);
   main_viewer->setFixedHeight(1000);
   main_viewer->setFixedWidth(1000);
@@ -37,30 +48,22 @@ void ViewerWidget::DefineLayouts() {
   log_viewer->setReadOnly(true);
   log_viewer->setFixedHeight(150);
   main_layout->addWidget(log_viewer);
-
-  // Main widget layout
-  QHBoxLayout* main_widget_layout = new QHBoxLayout(this);
-  main_widget_layout->addWidget(left_panel);
-  main_widget_layout->addWidget(main_panel);
 }
 
 void ViewerWidget::ShowError() {
-    s21::LogError("ShowError", "inside");
-  QString error_message;
-  QFile file("logs/debug.log");
-  if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      s21::LogError("ShowError", "file opened");
-    QTextStream in(&file);
-    log_viewer->setText(in.readAll());
-    in.seek(0);  // Reset the stream to read from the beginning
-    while (!in.atEnd()) {
-      error_message = in.readLine();
-    }
+  std::ifstream file("logs/debug.log", std::ios::in);
+  if (!file.is_open()) {
+    QMessageBox::critical(this, "Error", "logs/debug.log not found. Try again");
+    std::ofstream log_file("logs/debug.log", std::ios::out);
+    log_file.close();
+  } else {
+    std::string error_message;
+    GetLastLine(file, error_message);
     file.close();
-  }
-  if (!error_message.isEmpty()) {
-      s21::LogError("ShowError", "error message not empty");
-    QMessageBox::critical(this, "Error", error_message);
+    if (!error_message.empty()) {
+      QMessageBox::critical(this, "Error", QString::fromStdString(error_message));
+      log_viewer->append(QString::fromStdString(error_message));
+    }
   }
 }
 
@@ -71,12 +74,19 @@ void ViewerWidget::UpdateObjectInfo() {
                        .arg(current_object->GetId())
                        .arg(current_object->GetFaces().size());
     object_info_label->setText(info);
-    main_viewer->SetModel(*current_object);
-    main_viewer->update();  // Refresh the viewer to display the new model
+    main_viewer->SetModel(current_object);
+    main_viewer->update();
   } else {
     ShowError();
   }
 }
 
+// helper funcs
+void GetLastLine(std::ifstream& file, std::string& error_message) {
+  std::string line;
+  while (std::getline(file, line)) {
+    error_message = line;
+  }
+}
 
 }  // namespace s21

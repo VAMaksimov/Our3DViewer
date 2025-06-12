@@ -43,7 +43,7 @@ std::string GetCurrentTimestamp() {
 }
 
 std::string FormatErrorMessage(const std::string& component,
-                                      const std::string& message) {
+                               const std::string& message) {
   return "[" + GetCurrentTimestamp() + "] " + component + ": " + message + "\n";
 }
 

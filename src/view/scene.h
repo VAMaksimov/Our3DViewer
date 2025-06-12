@@ -1,11 +1,12 @@
 #ifndef VIEW_SCENE_H_
 #define VIEW_SCENE_H_
 
-#include <QOpenGLWidget>
 #include <QOpenGLBuffer>
+#include <QOpenGLWidget>
 #include <QVector3D>
 #include <QWheelEvent>
-#include "model/parser.h" // WireframeObject
+
+#include "model/parser.h"
 
 namespace s21 {
 
@@ -57,4 +58,5 @@ private:
 
 } // namespace s21
 
-#endif // VIEW_SCENE_H_
+
+#endif  // VIEW_SCENE_H_
