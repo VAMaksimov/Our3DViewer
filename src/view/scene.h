@@ -23,7 +23,9 @@ public:
         vbo_.release();
     }
    void wheelEvent(QWheelEvent *event) override;
-
+   void mousePressEvent(QMouseEvent* event) override;
+   void mouseMoveEvent(QMouseEvent* event) override;
+   void mouseReleaseEvent(QMouseEvent* event) override;
 
 protected:
     void initializeGL() override;
@@ -35,7 +37,23 @@ protected:
 
 private:
     float scale_factor_ = 1.0f;  // Начальный масштаб
+    bool is_dragging = false;
+    QPoint last_mouse_pos;
+    QVector2D model_position;
+
+   /* bool is_rotating = false;
+    QPoint last_rotate_pos;
+    S21Matrix rotation_matrix;  // Матрица поворота 4x4
+    QVector3D rotation_angles;  // Углы поворота по осям X,Y,Z*/
 };
+
+// Примеры цветов:
+// Белый: (1.0, 1.0, 1.0, 1.0)
+// Чёрный: (0.0, 0.0, 0.0, 1.0)
+// Красный: (1.0, 0.0, 0.0, 1.0)
+// Зелёный: (0.0, 1.0, 0.0, 1.0)
+// Синий: (0.0, 0.0, 1.0, 1.0)
+// Прозрачный (если используется альфа-блендинг): (0.0, 0.0, 0.0, 0.0)
 
 } // namespace s21
 

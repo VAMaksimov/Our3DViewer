@@ -38,8 +38,8 @@ class WireframeObject {
     }
   };
   struct Face {
-    Coordinate position[3];
-    TextureCoordinate texture[3];
+    Coordinate* position[3];
+    TextureCoordinate* texture[3];
     Coordinate normal;
   };
   struct Counter {
@@ -67,15 +67,15 @@ class WireframeObject {
   void AssignName(const std::string file_path) noexcept;
 
  public:
- std::vector<Coordinate> vertices;
- std::vector<Face> faces;
+  std::vector<Coordinate> vertices;
+  std::vector<Face> faces;
+  std::string name;
+  std::vector<TextureCoordinate> textures;
+  std::vector<Coordinate> normals;
 
  protected:
   static int next_id;
   int id = -1;
-  std::string name;
-  std::vector<TextureCoordinate> textures;
-  std::vector<Coordinate> normals;
   Counter count;
 
  protected:
